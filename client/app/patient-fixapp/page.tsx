@@ -111,8 +111,15 @@ const PatientAppointmentFixing: React.FC = () => {
                 <p>Email: {doctor.email}</p>
               </CardBody>
               <CardFooter>
-                <Button onClick={() => handleFixAppointment(doctor.id)} color="primary" variant="bordered">
-                  Fix Appointment
+                <Button
+                    onClick={() => {
+                        handleFixAppointment(doctor.id);
+                        window.location.href = '/patient-app-history';
+                    }}
+                    color="primary"
+                    variant="bordered"
+                >
+                    Fix Appointment
                 </Button>
               </CardFooter>
             </Card>
