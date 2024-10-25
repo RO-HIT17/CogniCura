@@ -16,7 +16,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function SignupLayoutForDoctor({
+export default function SignupLayoutForPatient({
   children,
 }: {
   children: React.ReactNode;
