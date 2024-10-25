@@ -3,10 +3,19 @@ import { AppointmentModel } from '../models/appointments';
 import { DoctorModel } from '../models/doctor'; 
 import { PatientModel } from '../models/patient'; 
 import { sendNotification } from '../utils/notifcationService';
+import { google } from 'googleapis';
+import dotenv from 'dotenv';
+dotenv.config(); 
+const calendar = google.calendar('v3');
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
 
 export const scheduleAppointment = async (req: Request, res: Response):Promise<void> => {
   try {
-    const { patient_id, doctor_id, appointment_time, status, reason } = req.body;
+    const { patient_id, doctor_id, appointment_time,startTime,endTime, status, reason } = req.body;
 
     const patient = await PatientModel.findById(patient_id);
     const doctor = await DoctorModel.findById(doctor_id);
@@ -39,10 +48,10 @@ export const scheduleAppointment = async (req: Request, res: Response):Promise<v
 };
 
 
-export const updateAppointment = async (req: Request, res: Response):Promise<void> => {
+export const updateAppointment = async (req: Request, res: Response): Promise<void> => {
   try {
     const { appointmentId } = req.params;
-    const { status, reason } = req.body;
+    const { status, reason, newAppointmentTime } = req.body; 
 
     const appointment = await AppointmentModel.findById(appointmentId);
     if (!appointment) {
@@ -51,7 +60,13 @@ export const updateAppointment = async (req: Request, res: Response):Promise<voi
     }
 
     if (status) appointment.status = status;
+    
     if (reason) appointment.reason = reason;
+    
+ 
+    if (newAppointmentTime) {
+      appointment.appointment_time = newAppointmentTime; 
+    }
 
     await appointment.save();
     res.status(200).json({ success: true, data: appointment });

@@ -10,9 +10,9 @@ import {
 const router = Router();
 
 router.post('/', scheduleAppointment);
-router.put('/:appointmentId', updateAppointment);
-router.get('/:appointmentId', getAppointment);
-router.delete('/:appointmentId', deleteAppointment);
+router.put('/update/:appointmentId', updateAppointment);
+router.get('/get/:appointmentId', getAppointment);
+router.delete('/delete/:appointmentId', deleteAppointment);
 router.get('/', getAllAppointments);
 
 export default router;
