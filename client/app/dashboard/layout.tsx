@@ -8,7 +8,7 @@ import { Providers } from "../providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import  Navbar  from "@/components/navbar";
+import DocNavbar from "@/components/docnavbar";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -27,9 +27,13 @@ export default function HomeLayout({
   //if (loading) return <div>Loading...</div>; 
   return (
     <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+      <div className="relative flex flex-col h-screen">
+        <DocNavbar /> 
+
         <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
           {children}
         </main>
+      </div>
     </Providers>
   );
 }

@@ -13,7 +13,7 @@ export default function Settings() {
   const [email, setEmail] = useState<string>('abc@gmail.com');
   const [firstname, setFirstName] = useState<string>('John');
   const [lastname, setLastName] = useState<string>('Doe');
-  const [role, setRole] = useState<string>('Manager');
+  const [role, setRole] = useState<string>('Cardiologist');
   const [username, setUsername] = useState<string>('abc');
   const [password, setPassword] = useState<string | number>('1');
   const [phone, setPhone] = useState<string | number>('9384799275');
@@ -27,7 +27,7 @@ export default function Settings() {
 
   const handleSignOut = () => {
     alert("Signed out");
-    router.push('/login-pat');
+    router.push('/base-page');
   };
 
   const handleImageUpload = (file: File | null) => {

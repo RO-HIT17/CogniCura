@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
-
+import  DocNavbar  from "@/components/docnavbar";
 import { Providers } from "../providers";
 //import { useAuthCheck } from "../hoc/useAuthCheck";
 
@@ -27,9 +27,12 @@ export default function HistoryofPatients({
   //if (loading) return <div>Loading...</div>; 
   return (
     <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+      <div className="relative flex flex-col h-screen">
+      <DocNavbar />
         <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
           {children}
         </main>
+      </div>
     </Providers>
   );
 }
