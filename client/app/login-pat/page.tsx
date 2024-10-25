@@ -1,8 +1,8 @@
 'use client';
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Correct import for useRouter
-import { useState } from 'react'; // Import useState from React
-import { Button, Input, Spacer } from "@nextui-org/react"; // Importing Button, Input, and Spacer from Next UI
+import { useRouter } from 'next/navigation'; 
+import { useState } from 'react'; 
+import { Button, Input, Spacer } from "@nextui-org/react"; 
 import {
   Card,
   CardHeader,
@@ -25,7 +25,6 @@ export const description =
       const email = e.currentTarget.email.value;
       const password = e.currentTarget.password.value;
   
-      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         setError('Please enter a valid email address');
@@ -62,7 +61,7 @@ export const description =
     <div className="flex items-center justify-center min-h-screen bg-[url('/image.jpg')] bg-cover bg-center">
       <Card className="mx-auto w-96 bg-black bg-opacity-30 p-6 rounded-lg shadow-lg">
         <CardHeader className="text-center">
-          <h2 className={title({ color: "blue" })}>Web App</h2>
+          <h2 className={title({ color: "blue" })}>Login</h2>
         </CardHeader>
         <CardBody>
           <form className="grid gap-4" onSubmit={handleLogin}>
@@ -106,20 +105,7 @@ export const description =
             >
               Login
             </Button>
-            <div className="flex items-center my-3">
-              <hr className="flex-grow border-t border-gray-500" />
-              <span className="mx-2 text-gray-400">OR</span>
-              <hr className="flex-grow border-t border-gray-500" />
-            </div>
-            <Button
-              type="button"
-              className="mt-2 border border-white-500 flex items-center justify-center"
-              color="gradient"
-              auto
-            >
-              <FaGoogle className="mr-2" />
-              Login with Google
-            </Button>
+            
           </form>
         </CardBody>
         <CardFooter className="text-center">
