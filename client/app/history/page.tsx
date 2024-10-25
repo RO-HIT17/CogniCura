@@ -21,12 +21,34 @@ interface PatientVisit {
 }
 
 const patientVisitData: PatientVisit[] = [
-  { visitDate: "2024-01-15", patientName: "John Doe", reason: "Follow-up" },
-  { visitDate: "2024-01-20", patientName: "Jane Smith", reason: "New Consultation" },
-  { visitDate: "2024-02-05", patientName: "Carlos Hernandez", reason: "Routine Check-up" },
-  { visitDate: "2024-03-10", patientName: "Sarah Lee", reason: "Consultation" },
-  { visitDate: "2024-03-15", patientName: "David Johnson", reason: "Specialist Referral"}
+  { visitDate: "2024-04-05", patientName: "Emily Parker", reason: "Skin Allergy" },
+  { visitDate: "2024-04-10", patientName: "Michael Brown", reason: "Dental Check-up" },
+  { visitDate: "2024-04-15", patientName: "Jessica Taylor", reason: "Physical Therapy" },
+  { visitDate: "2024-05-01", patientName: "Daniel Wilson", reason: "Routine Check-up" },
+  { visitDate: "2024-05-10", patientName: "Olivia Martinez", reason: "Blood Pressure Monitoring" },
+  { visitDate: "2024-05-20", patientName: "Nathan Lee", reason: "Diabetes Check" },
+  { visitDate: "2024-06-01", patientName: "Sophia Clark", reason: "Asthma Management" },
+  { visitDate: "2024-06-15", patientName: "Lucas Walker", reason: "Annual Check-up" },
+  { visitDate: "2024-06-20", patientName: "Isabella Hall", reason: "Weight Management" },
+  { visitDate: "2024-07-01", patientName: "Alexander Adams", reason: "Cholesterol Test" },
+  { visitDate: "2024-07-15", patientName: "Chloe Davis", reason: "Sports Injury Consultation" },
+  { visitDate: "2024-07-25", patientName: "Liam Roberts", reason: "Vision Test" },
+  { visitDate: "2024-08-05", patientName: "Amelia Robinson", reason: "Flu Symptoms" },
+  { visitDate: "2024-08-20", patientName: "James Lewis", reason: "Heart Check-up" },
+  { visitDate: "2024-09-01", patientName: "Ava Evans", reason: "Pregnancy Check-up" },
+  { visitDate: "2024-09-15", patientName: "Ethan Turner", reason: "Kidney Health Monitoring" },
+  { visitDate: "2024-09-20", patientName: "Lily Thompson", reason: "General Consultation" },
+  { visitDate: "2024-10-05", patientName: "William Campbell", reason: "Mental Health Check" },
+  { visitDate: "2024-10-15", patientName: "Grace White", reason: "Nutrition Counseling" },
+  { visitDate: "2024-10-25", patientName: "Benjamin Harris", reason: "Back Pain Consultation" },
+  { visitDate: "2024-11-01", patientName: "Mia Young", reason: "Sleep Disorder Consultation" },
+  { visitDate: "2024-11-10", patientName: "Ella King", reason: "ENT Consultation" },
+  { visitDate: "2024-11-20", patientName: "Aiden Scott", reason: "Post-Surgery Check-up" },
+  { visitDate: "2024-12-01", patientName: "Zoe Green", reason: "Skin Rash Consultation" },
+  { visitDate: "2024-12-15", patientName: "Henry Edwards", reason: "Joint Pain Consultation" },
+  { visitDate: "2024-12-20", patientName: "Layla Martinez", reason: "Dental Cleaning" }
 ];
+
 
 const PatientVisitHistoryPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -77,7 +99,6 @@ const PatientVisitHistoryPage: React.FC = () => {
             
           </Table>
           <Spacer x={10}/>
-          <Pagination total={10} initialPage={1} />
         </CardBody>
         <CardFooter className="text-center text-sm text-gray-400">
           Patient visit history details.
