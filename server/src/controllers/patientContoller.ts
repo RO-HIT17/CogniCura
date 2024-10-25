@@ -1,145 +1,121 @@
 import { Request, Response } from 'express';
 import { PatientModel, IPatient } from '../models/patient';
-import bcrypt from 'bcryptjs';
-import { generateToken } from '../utils/jwt';
+import bcrypt from 'bcryptjs'; 
+import { generateToken } from '../utils/jwt'; 
 
-export const registerPatient = async (req: Request, res: Response) => {
-  const { firstName, lastName, userName, mobile, email, password, role, reason, symptoms, location } = req.body;
-  const existingEmail: IPatient | null = await PatientModel.findOne({ email });
-  const existingUser: IPatient | null = await PatientModel.findOne({ userName });
+export const loginPatient = async (req: Request, res: Response):Promise<void> => {
+  const { email, password } = req.body;
 
-  if (existingUser || existingEmail) {
-    res.status(400).json({ msg: 'Patient already exists' });
+  const patient = await PatientModel.findOne({ email });
+  if (!patient) {
+    res.status(401).json({ success: false, message: 'Invalid credentials' });
     return;
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const patient = new PatientModel({ firstName, lastName, userName, mobile, email, password: hashedPassword, role, reason, symptoms, location });
-
-  await patient.save();
-  const token = generateToken(patient._id.toString(), patient.role);
-  res.status(201).json({ success: true, data: patient, token });
-};
-
-export const updatePatient = async (req: Request, res: Response) => {
-  try {
-    const { patientId, firstName, lastName, mobile, email, password, role, reason, symptoms, location } = req.body;
-    const patient = await PatientModel.findById(patientId);
-
-    if (!patient) {
-      res.status(404).send('Patient not found');
-      return;
-    }
-
-    if (firstName) patient.firstName = firstName;
-    if (lastName) patient.lastName = lastName;
-    if (mobile) patient.mobile = mobile;
-    if (reason) patient.reason = reason;
-    if (symptoms) patient.symptoms = symptoms;
-    if (location) patient.location = location;
-
-    if (email) {
-      const existingPatient = await PatientModel.findOne({ email });
-      if (existingPatient && existingPatient._id.toString() !== patientId) {
-        res.status(400).send('Email is already taken');
-        return;
-      }
-      patient.email = email;
-    }
-
-    
-
-    if (password) {
-      const salt = await bcrypt.genSalt(10);
-      patient.password = await bcrypt.hash(password, salt);
-    }
-
-    if (role) patient.role = role;
-
-    await patient.save();
-    res.status(200).json({ message: 'Patient updated successfully' });
-  } catch (error) {
-    console.error('Error updating patient:', error);
-    res.status(500).send('Server error');
-  }
-};
-
-export const loginPatient = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const patient = await PatientModel.findOne({ email });
-
-  if (!patient || !(await bcrypt.compare(password, patient.password))) {
+  const isMatch = await bcrypt.compare(password, patient.password);
+  if (!isMatch) {
     res.status(401).json({ success: false, message: 'Invalid credentials' });
     return;
   }
 
   const token = generateToken(patient._id.toString(), patient.role);
-  const id = patient._id;
-  res.status(200).json({ success: true, token, id });
+  res.status(200).json({ success: true, token, id: patient._id });
 };
 
-export const getPatient = async (req: Request, res: Response) => {
+export const registerPatient = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { patientId } = req.params;
-    const patient = await PatientModel.findById(patientId);
-
-    if (!patient) {
-      res.status(404).send('Patient not found');
+    const { first_name, last_name, email, phone, date_of_birth, medical_history,password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const existingPatient = await PatientModel.findOne({ email });
+    if (existingPatient) {
+      res.status(400).json({ msg: 'Patient with this email already exists' });
       return;
     }
 
+    const patient = new PatientModel({
+      first_name,
+      last_name,
+      email,
+      phone,
+      date_of_birth,
+      medical_history,
+      password: hashedPassword,
+    });
+
+    await patient.save();
+    const token = generateToken(patient._id.toString(), "patient"); 
+
+    res.status(201).json({ success: true, data: patient, token });
+  } catch (error) {
+    console.error('Error registering patient:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
+export const updatePatient = async (req: Request, res: Response):Promise<void>  => {
+  try {
+    const { patientId } = req.params;
+    const { first_name, last_name, email, phone, date_of_birth, medical_history } = req.body;
+
+    const patient = await PatientModel.findById(patientId);
+    if (!patient) {
+      res.status(404).json({ msg: 'Patient not found' });
+      return;
+    }
+
+    if (first_name) patient.first_name = first_name;
+    if (last_name) patient.last_name = last_name;
+    if (email) patient.email = email;
+    if (phone) patient.phone = phone;
+    if (date_of_birth) patient.date_of_birth = date_of_birth;
+    if (medical_history) patient.medical_history = medical_history;
+
+    await patient.save();
+    res.status(200).json({ success: true, data: patient });
+  } catch (error) {
+    console.error('Error updating patient:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+export const getPatient = async (req: Request, res: Response):Promise<void> => {
+  try {
+    const { patientId } = req.params;
+    const patient = await PatientModel.findById(patientId);
+    if (!patient) {
+      res.status(404).json({ msg: 'Patient not found' });
+      return;
+    }
     res.status(200).json({ success: true, data: patient });
   } catch (error) {
     console.error('Error fetching patient:', error);
-    res.status(500).send('Server error');
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-export const deletePatient = async (req: Request, res: Response) => {
+
+export const deletePatient = async (req: Request, res: Response):Promise<void> => {
   try {
     const { patientId } = req.params;
     const patient = await PatientModel.findByIdAndDelete(patientId);
-
     if (!patient) {
-      res.status(404).send('Patient not found');
+      res.status(404).json({ msg: 'Patient not found' });
       return;
     }
-
-    res.status(200).json({ message: 'Patient deleted successfully' });
+    res.status(200).json({ success: true, message: 'Patient deleted successfully' });
   } catch (error) {
     console.error('Error deleting patient:', error);
-    res.status(500).send('Server error');
+    res.status(500).json({ success: false, message: 'Server error' });
   }
 };
-// Method to schedule an appointment
-export const scheduleAppointment = async (patientId: string, doctorId: string, slot: { start: Date, end: Date }) => {
-    const patient = await PatientModel.findById(patientId);
-    if (!patient) throw new Error('Patient not found');
-    if (!patient.appointments) {
-        patient.appointments = [];
-    }
-    patient.appointments.push({
-        doctorId, start: slot.start, end: slot.end,
-        _id: undefined,
-        mode: ''
-    });
-    return patient.save();
-};
 
-// Method to cancel an appointment
-export const cancelAppointment = async (patientId: string, appointmentId: string) => {
-    const patient = await PatientModel.findById(patientId);
-    if (!patient) throw new Error('Patient not found');
-    if (patient.appointments) {
-        patient.appointments = patient.appointments.filter(appointment => appointment._id.toString() !== appointmentId);
-    }
-    return patient.save();
-};
-
-// Method to send notifications
-export const sendNotification = async (patientId: string, message: string) => {
-    const patient = await PatientModel.findById(patientId);
-    if (!patient) throw new Error('Patient not found');
-    // Implement email or SMS notification logic here
-    console.log(`Sending notification to ${patient.email}: ${message}`);
+export const getAllPatients = async (req: Request, res: Response):Promise<void> => {
+  try {
+    const patients = await PatientModel.find();
+    res.status(200).json({ success: true, data: patients });
+  } catch (error) {
+    console.error('Error fetching patients:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };

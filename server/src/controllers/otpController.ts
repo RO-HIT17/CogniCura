@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserModel } from '../models/userModel';
+import { DoctorModel } from '../models/doctor';
 import transporter from '../config/nodeMailer';
 import { generateOTP, generateOTPExpiration  } from '../utils/otp';
 import { verifyOTP } from '../utils/otp';
@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 
 export const sendOTP = async (req: Request, res: Response): Promise<void> => {
   const { email } = req.body;
-  const user = await UserModel.findOne({ email });
+  const user = await DoctorModel.findOne({ email });
 
   if (!user) {
     res.status(404).json({ message: 'User not found' });
@@ -41,7 +41,7 @@ export const verifyOTPController = async (req: Request, res: Response): Promise<
     try {
       const { email, otp } = req.body;
       
-      const user = await UserModel.findOne({ email });
+      const user = await DoctorModel.findOne({ email });
   
       if (!user) {
         
@@ -80,7 +80,7 @@ export const verifyOTPController = async (req: Request, res: Response): Promise<
     try {
       const { email , newPassword } = req.body;
       
-      const user = await UserModel.findOne({ email });
+      const user = await DoctorModel.findOne({ email });
   
       if (!user) {
         res.status(404).json({ message: 'User not found' });
