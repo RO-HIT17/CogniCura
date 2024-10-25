@@ -4,6 +4,7 @@ import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 
 import { Providers } from "../providers";
+//import { useAuthCheck } from "../hoc/useAuthCheck";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
@@ -16,21 +17,23 @@ export const viewport: Viewport = {
   ],
 };
 
+export default function HomeLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  //const { loading, authenticated } = useAuthCheck();
 
-export default function SettingsLayout({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
-    return (
-      <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+  //if (loading) return <div>Loading...</div>; 
+  return (
+    <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
       <div className="relative flex flex-col h-screen">
+        
         <Navbar />
         <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
           {children}
         </main>
       </div>
     </Providers>
-    );
-  }
-  
+  );
+}
