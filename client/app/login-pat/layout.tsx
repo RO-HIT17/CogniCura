@@ -7,7 +7,7 @@ import { Providers } from "../providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import  Navbar  from "@/components/navbar";
+import { Navbar } from "@/components/navbar";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -16,7 +16,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function SignupLayoutForDoctor({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode;

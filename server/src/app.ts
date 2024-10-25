@@ -6,6 +6,8 @@ import doctorRoutes from './routes/doctorRoutes';
 import patientRoutes from './routes/patientRoutes';
 import otpRoutes from './routes/otpRoutes';
 import appointmentRoutes from './routes/appointmentRoutes';
+import timeSlotRoutes from './routes/timeSlotRoutes'; 
+
 dotenv.config(); 
 const app = express();
 connectDB();
@@ -16,6 +18,7 @@ app.use('/api/doctor', doctorRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/timeSlot', timeSlotRoutes)
 
 const PORT = process.env.PORT!;
 
