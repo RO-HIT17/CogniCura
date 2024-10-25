@@ -27,12 +27,12 @@ const BasePage: React.FC = () => {
           <h4 style={{ color: '#4A90E2' }}>Are you a patient or a doctor?</h4>
           <Spacer y={4} />
           <NextLink href="/sign-up-patient">
-            <Button shadow color="primary" variant="bordered" style={{ marginBottom: '20px', padding: '15px 30px', fontSize: '16px' }} auto>
+            <Button shadow color="primary" variant="shadow" style={{ marginBottom: '20px', padding: '15px 30px', fontSize: '16px' }} auto>
               I am a Patient
             </Button>
           </NextLink>
           <NextLink href="/sign-up-doctor">
-            <Button shadow color="secondary" variant="bordered" style={{ padding: '15px 30px', fontSize: '16px' }} auto>
+            <Button shadow color="secondary" variant="shadow" style={{ padding: '15px 30px', fontSize: '16px' }} auto>
               I am a Doctor
             </Button>
           </NextLink>
