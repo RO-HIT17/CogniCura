@@ -11,7 +11,17 @@ const BasePage: React.FC = () => {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
       <Card style={{ maxWidth: '600px', padding: '20px' }}>
         <CardHeader style={{ justifyContent: 'center' }}>
-          <span className={title({ color: "violet" })}>Welcome!</span>
+        <div className="inline-block max-w-xl text-center justify-center">
+          <span className={title()}>Welcome to the </span>
+          <span className={title({ color: "violet" })}>Healthcare App</span>
+          <br />
+          <span className={title()}>
+            Manage your healthcare information
+          </span>
+          <div className={subtitle({ class: "mt-4" })}>
+            Easily view and manage your appointments, treatments, and medical history.
+          </div>
+        </div>
         </CardHeader>
         <CardBody style={{ textAlign: 'center' }}>
           <h4 style={{ color: '#4A90E2' }}>Are you a patient or a doctor?</h4>
