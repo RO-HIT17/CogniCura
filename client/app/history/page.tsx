@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 import { Input } from '@nextui-org/react';
+import {Pagination} from "@nextui-org/react";
 import {
   Table,
   TableHeader,
@@ -17,15 +18,14 @@ interface PatientVisit {
   visitDate: string;
   patientName: string;
   reason: string;
-  doctorName: string;
 }
 
 const patientVisitData: PatientVisit[] = [
-  { visitDate: "2024-01-15", patientName: "John Doe", reason: "Follow-up", doctorName: "Dr. Smith" },
-  { visitDate: "2024-01-20", patientName: "Jane Smith", reason: "New Consultation", doctorName: "Dr. Brown" },
-  { visitDate: "2024-02-05", patientName: "Carlos Hernandez", reason: "Routine Check-up", doctorName: "Dr. Lee" },
-  { visitDate: "2024-03-10", patientName: "Sarah Lee", reason: "Consultation", doctorName: "Dr. Smith" },
-  { visitDate: "2024-03-15", patientName: "David Johnson", reason: "Specialist Referral", doctorName: "Dr. Brown" },
+  { visitDate: "2024-01-15", patientName: "John Doe", reason: "Follow-up" },
+  { visitDate: "2024-01-20", patientName: "Jane Smith", reason: "New Consultation" },
+  { visitDate: "2024-02-05", patientName: "Carlos Hernandez", reason: "Routine Check-up" },
+  { visitDate: "2024-03-10", patientName: "Sarah Lee", reason: "Consultation" },
+  { visitDate: "2024-03-15", patientName: "David Johnson", reason: "Specialist Referral"}
 ];
 
 const PatientVisitHistoryPage: React.FC = () => {
@@ -56,7 +56,6 @@ const PatientVisitHistoryPage: React.FC = () => {
               <TableColumn>Visit Date</TableColumn>
               <TableColumn>Patient</TableColumn>
               <TableColumn>Reason</TableColumn>
-              <TableColumn>Doctor</TableColumn>
             </TableHeader>
             <TableBody>
               {filteredVisits.length > 0 ? (
@@ -65,7 +64,6 @@ const PatientVisitHistoryPage: React.FC = () => {
                     <TableCell>{visit.visitDate}</TableCell>
                     <TableCell>{visit.patientName}</TableCell>
                     <TableCell>{visit.reason}</TableCell>
-                    <TableCell>{visit.doctorName}</TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -76,7 +74,10 @@ const PatientVisitHistoryPage: React.FC = () => {
                 </TableRow>
               )}
             </TableBody>
+            
           </Table>
+          <Spacer x={10}/>
+          <Pagination total={10} initialPage={1} />
         </CardBody>
         <CardFooter className="text-center text-sm text-gray-400">
           Patient visit history details.

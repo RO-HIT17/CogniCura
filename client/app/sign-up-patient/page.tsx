@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, FormEvent } from 'react'; 
-import { Button, Input, Spacer, Select, SelectItem } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import {
   Card,
   CardHeader,
@@ -11,29 +11,27 @@ import {
 } from "@nextui-org/card"; 
 import { title } from "@/components/primitives";
 
-interface DoctorSignUpFormData {
+interface PatientSignUpFormData {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   email: string;
   password: string;
   confirmPassword: string;
-  specialization: string;
 }
 
 const DoctorSignUpPage: React.FC = () => {
   const [error, setError] = useState<string>(''); 
-  const [formData, setFormData] = useState<DoctorSignUpFormData>({
+  const [formData, setFormData] = useState<PatientSignUpFormData>({
     firstName: '',
     lastName: '',
     phoneNumber: '',
     email: '',
     password: '',
     confirmPassword: '',
-    specialization: '',
   }); 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
@@ -43,7 +41,7 @@ const DoctorSignUpPage: React.FC = () => {
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
 
-    const { firstName, lastName, phoneNumber, email, password, confirmPassword, specialization } = formData;
+    const { firstName, lastName, phoneNumber, email, password, confirmPassword } = formData;
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -62,7 +60,6 @@ const DoctorSignUpPage: React.FC = () => {
           phoneNumber,
           email,
           password,
-          specialization,
         }),
       });
 
@@ -85,7 +82,7 @@ const DoctorSignUpPage: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-[url('/doctor-bg.jpg')] bg-cover bg-center">
       <Card className="mx-auto w-104 bg-white bg-opacity-10 p-6 rounded-lg shadow-lg">
         <CardHeader className="text-center">
-          <h2 className={title({ color: "blue" })}>Doctor Sign Up</h2>
+          <h2 className={title({ color: "blue" })}>Sign Up</h2>
         </CardHeader>
         <CardBody>
           <form className="grid gap-2" onSubmit={handleSignUp}>
@@ -158,25 +155,6 @@ const DoctorSignUpPage: React.FC = () => {
               className="bg-transparent"
               onChange={handleChange}
             />
-            <Select
-              id="specialization"
-              label="Specialization"
-              variant="bordered"
-              fullWidth
-              required
-              className="bg-transparent"
-              value={formData.specialization}
-              onChange={(e) => handleChange(e as any)}
-            >
-              <SelectItem key="general" value="General">General</SelectItem>
-              <SelectItem key="ent" value="ENT">ENT</SelectItem>
-              <SelectItem key="cardiology" value="Cardiology">Cardiology</SelectItem>
-              <SelectItem key="neurology" value="Neurology">Neurology</SelectItem>
-              <SelectItem key="orthopedics" value="Orthopedics">Orthopedics</SelectItem>
-              <SelectItem key="pediatrics" value="Pediatrics">Pediatrics</SelectItem>
-              <SelectItem key="other" value="Other">Other</SelectItem>
-            </Select>
-            
             <Button 
               type="submit" 
               className="mt-2 border border-blue-500" 
