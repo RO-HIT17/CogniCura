@@ -182,6 +182,7 @@ const DoctorSignUpPage: React.FC = () => {
               className="mt-2 border border-blue-500" 
               color="gradient" 
               auto
+              onClick={() => window.location.href = '/dashboard'}
             >
               Sign Up
             </Button>
@@ -190,7 +191,7 @@ const DoctorSignUpPage: React.FC = () => {
         <CardFooter className="text-center">
           <p className="text-gray-400">
             Already have an account?{" "}
-            <Link href="/login" legacyBehavior>
+            <Link href="/login-doc" legacyBehavior>
               <a className="text-blue-300">Login</a>
             </Link>
           </p>

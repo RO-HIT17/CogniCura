@@ -24,8 +24,6 @@ export const description =
       
       const email = e.currentTarget.email.value;
       const password = e.currentTarget.password.value;
-  
-      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         setError('Please enter a valid email address');
@@ -103,6 +101,7 @@ export const description =
               className="mt-3 border border-white-500" 
               color="gradient" 
               auto
+              onClick={() => window.location.href = '/dashboard'}
             >
               Login
             </Button>
@@ -112,7 +111,7 @@ export const description =
         <CardFooter className="text-center">
           <p className="text-gray-400">
             Don't have an account?{" "}
-            <Link href="/sign-up" legacyBehavior>
+            <Link href="/sign-up-doctor" legacyBehavior>
               <a className="text-blue-300">Sign up</a>
             </Link>
           </p>
