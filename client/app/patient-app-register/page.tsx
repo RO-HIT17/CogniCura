@@ -87,8 +87,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             color="primary"
           >
             <SelectItem key="In-person" value="In-person">In-person</SelectItem>
-            <SelectItem key="Teleconsultation" value="Teleconsultation">Teleconsultation</SelectItem>
-            <SelectItem key="Home Visit" value="Home Visit">Home Visit</SelectItem>
+            <SelectItem key="Teleconsultation" value="Teleconsultation">Online</SelectItem>
           </Select>
         </div>
         <div>
