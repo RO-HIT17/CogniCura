@@ -1,25 +1,31 @@
 'use client';
 
 import React from 'react';
-import { Button, Spacer } from '@nextui-org/react';
-import { Card, CardHeader, CardBody } from '@nextui-org/card';
+import { Button, Spacer, Card } from '@nextui-org/react';
+import { CardHeader, CardBody } from '@nextui-org/card';
+import NextLink from 'next/link';
+import { title, subtitle } from '@/components/primitives';
 
 const BasePage: React.FC = () => {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Card style={{ maxWidth: '400px', padding: '20px' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px' }}>
+      <Card style={{ maxWidth: '600px', padding: '20px' }}>
         <CardHeader style={{ justifyContent: 'center' }}>
-          <h2>Welcome</h2>
+          <span className={title({ color: "violet" })}>Welcome!</span>
         </CardHeader>
         <CardBody style={{ textAlign: 'center' }}>
-          <h4>Are you a patient or a doctor?</h4>
-          <Spacer y={1} />
-          <Button shadow color="primary" style={{ marginBottom: '10px' }} onClick={() => window.location.href = '/sign-up-patient'} auto>
-            I am a Patient
-          </Button>
-          <Button shadow color="secondary" onClick={() => window.location.href = '/sign-up-doctor'} auto>
-            I am a Doctor
-          </Button>
+          <h4 style={{ color: '#4A90E2' }}>Are you a patient or a doctor?</h4>
+          <Spacer y={4} />
+          <NextLink href="/sign-up-patient">
+            <Button shadow color="primary" variant="bordered" style={{ marginBottom: '20px', padding: '15px 30px', fontSize: '16px' }} auto>
+              I am a Patient
+            </Button>
+          </NextLink>
+          <NextLink href="/sign-up-doctor">
+            <Button shadow color="secondary" variant="bordered" style={{ padding: '15px 30px', fontSize: '16px' }} auto>
+              I am a Doctor
+            </Button>
+          </NextLink>
         </CardBody>
       </Card>
     </div>
