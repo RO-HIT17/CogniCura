@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Card, CardHeader, CardBody } from '@nextui-org/card';
-import { Input, Button } from '@nextui-org/react';
+import { Input, Button, Select, SelectItem } from '@nextui-org/react';
 import {
   Table,
   TableHeader,
@@ -25,14 +25,25 @@ interface Appointment {
 }
 
 const appointmentsData: Appointment[] = [
+  { date: "2024-10-25", time: "10:00 AM", patientName: "John Doe", reason: "Follow-up", contact: "7465960367", symptoms: "Fever, Cough", appointmentMode: "Online", files: ["file1.pdf", "file2.png"] },
+  { date: "2024-10-25", time: "11:30 AM", patientName: "Jane Smith", reason: "New Consultation", contact: "7446379972", symptoms: "Headache", appointmentMode: "Offline", files: ["file3.pdf"] },
+  { date: "2024-10-25", time: "2:00 PM", patientName: "Carlos Hernandez", reason: "Routine Check-up", contact: "8928715210", symptoms: "Fatigue, Nausea", appointmentMode: "Online", files: ["file4.pdf", "file5.png"] },
+  { date: "2024-10-25", time: "9:30 AM", patientName: "Sarah Lee", reason: "Consultation", contact: "9105254664", symptoms: "Anxiety", appointmentMode: "Offline", files: [] },
+  { date: "2024-10-25", time: "1:00 PM", patientName: "David Johnson", reason: "Specialist Referral", contact: "4669799937", symptoms: "Chest Pain", appointmentMode: "Offline", files: ["file6.pdf"] },
+  { date: "2024-10-26", time: "10:30 AM", patientName: "Emily Parker", reason: "Skin Allergy", contact: "4866289862", symptoms: "Rash", appointmentMode: "Online", files: ["file7.pdf"] },
+  { date: "2024-10-26", time: "3:00 PM", patientName: "Michael Brown", reason: "Dental Check-up", contact: "4433157808", symptoms: "Toothache", appointmentMode: "Offline", files: [] },
+  { date: "2024-10-27", time: "1:30 PM", patientName: "Jessica Taylor", reason: "Physical Therapy", contact: "9547956327", symptoms: "Knee Pain", appointmentMode: "Online", files: ["file8.pdf"] },
 ];
 
 const DoctorAppointmentPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedMode, setSelectedMode] = useState<string>('All');
   const [selectedAppointment, setSelectedAppointment] = useState<number | null>(null);
 
   const filteredAppointments = appointmentsData.filter(appointment => {
-    return appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearchTerm = appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesMode = selectedMode === 'All' || appointment.appointmentMode === selectedMode;
+    return matchesSearchTerm && matchesMode;
   });
 
   const convertTimeToComparable = (time: string) => {
@@ -68,6 +79,17 @@ const DoctorAppointmentPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <Spacer x={2} />
+          {/* <Select
+            label="Filter by Appointment Mode"
+            onChange={setSelectedMode}
+            placeholder="Select Mode"
+            className="w-full"
+          >
+            <SelectItem value="All">All</SelectItem>
+            <SelectItem value="Online">Online</SelectItem>
+            <SelectItem value="Offline">Offline</SelectItem>
+          </Select> */}
           <Spacer y={1} />
         </CardHeader>
         <CardBody>
@@ -102,12 +124,9 @@ const DoctorAppointmentPage: React.FC = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell className="text-center text-gray-500">No appointments found for this search.</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
+                  <TableCell colSpan={6} className="text-center text-gray-500">
+                    No appointments found for this search.
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>
