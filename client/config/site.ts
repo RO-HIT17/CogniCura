@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Starter Template",
-  description: "A starter template for Next.js created by code crusaeders",
+  name: "Healthcare App",
+  description: "Built for sparkathon by team codecrusaders",
   navItems: [
     {
       label: "Home",

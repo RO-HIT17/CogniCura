@@ -136,7 +136,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             Send Reminders
           </Checkbox>
         </div>
-        <Button type="submit" color="primary">Fix Appointment</Button>
+        <Button type="submit" color="primary" onClick={() => window.location.href = '/patient-fixapp'} >Schdule Appointment</Button>
       </form>
     </div>
   );
