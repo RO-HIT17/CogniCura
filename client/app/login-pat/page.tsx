@@ -102,6 +102,7 @@ export const description =
               className="mt-3 border border-white-500" 
               color="gradient" 
               auto
+              onClick={() => window.location.href = '/patdashboard'}
             >
               Login
             </Button>
@@ -111,7 +112,7 @@ export const description =
         <CardFooter className="text-center">
           <p className="text-gray-400">
             Don't have an account?{" "}
-            <Link href="/sign-up" legacyBehavior>
+            <Link href="/sign-up-patient" legacyBehavior>
               <a className="text-blue-300">Sign up</a>
             </Link>
           </p>

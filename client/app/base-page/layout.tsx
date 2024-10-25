@@ -4,11 +4,10 @@ import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 
 import { Providers } from "../providers";
-//import { useAuthCheck } from "../hoc/useAuthCheck";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import  Navbar  from "@/components/navbar";
+import { Navbar } from "@/components/navbar";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -17,19 +16,18 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function HistoryofPatients({
+export default function BaseLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  //const { loading, authenticated } = useAuthCheck();
-
-  //if (loading) return <div>Loading...</div>; 
   return (
     <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-        <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+      <div className="relative flex flex-col h-screen">
+        <main>
           {children}
         </main>
+      </div>
     </Providers>
   );
 }

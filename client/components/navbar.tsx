@@ -36,7 +36,7 @@ const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/home">
             <Logo />
-            <p className="font-bold text-inherit">App Name</p>
+            <p className="font-bold text-inherit">Patient Portal</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -44,9 +44,27 @@ const Navbar = () => {
             <NextLink
               className={clsx(linkStyles({ color: "foreground" }))}
               color="foreground"
-              href="/home"
+              href="/patdashboard"
             >
               Home
+            </NextLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NextLink
+              className={clsx(linkStyles({ color: "foreground" }))}
+              color="foreground"
+              href="/patient-app-register"
+            >
+              Registration
+            </NextLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NextLink
+              className={clsx(linkStyles({ color: "foreground" }))}
+              color="foreground"
+              href="/patient-app-history"
+            >
+              History
             </NextLink>
           </NavbarItem>
 
@@ -67,16 +85,7 @@ const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-            <GithubIcon />
-          </Link>
           <ThemeSwitch />
-        </NavbarItem>
-        <NavbarItem className="hidden md:flex">
-          <User      
-            name="John Doe"
-            description="Manager"
-          />
         </NavbarItem>
       </NavbarContent>
 
@@ -93,9 +102,25 @@ const Navbar = () => {
           <NavbarMenuItem>
             <Link
               color="foreground"
-              href="/home"
+              href="/patdashboard"
             >
               Home
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              color="foreground"
+              href="/patient-app-register"
+            >
+              Registration
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link
+              color="foreground"
+              href="/patient-app-history"
+            >
+              History
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem>

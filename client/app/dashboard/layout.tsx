@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function HistoryofPatients({
+export default function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
