@@ -16,21 +16,18 @@ export const viewport: Viewport = {
   ],
 };
 
-
-export default function SettingsLayout({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
-    return (
-      <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+export default function SignupLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
       <div className="relative flex flex-col h-screen">
-        <Navbar />
-        <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+        <main>
           {children}
         </main>
       </div>
     </Providers>
-    );
-  }
-  
+  );
+}
