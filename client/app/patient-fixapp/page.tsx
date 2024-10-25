@@ -11,10 +11,9 @@ const PatientAppointmentFixing: React.FC = () => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [availableDoctors, setAvailableDoctors] = useState([]);
-  const [view, setView] = useState('form'); // 'form' or 'doctors'
+  const [view, setView] = useState('form');
   const { locale } = useLocale();
 
-  // Check if the selected date falls on a weekend
   const isLimitedAvailability = isWeekend(appointmentDate, locale);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +21,6 @@ const PatientAppointmentFixing: React.FC = () => {
     if (isLimitedAvailability) {
       alert('Limited availability of doctors on weekends. Please be patient!');
     } else {
-      // Fetch available doctors
       const doctors = await fetchAvailableDoctors(appointmentDate, startTime, endTime);
       setAvailableDoctors(doctors);
       setView('doctors');
@@ -31,17 +29,44 @@ const PatientAppointmentFixing: React.FC = () => {
   };
 
   const fetchAvailableDoctors = async (date, startTime, endTime) => {
-    // Mock API call to fetch doctors
     return [
       { id: 1, name: 'Dr. John Doe', rating: 4.5, availableTime: '10:00 AM - 12:00 PM', contact: '123-456-7890', email: 'john.doe@example.com', tags: ['Previously Visited', 'Most Experienced'] },
       { id: 2, name: 'Dr. Jane Smith', rating: 4.7, availableTime: '1:00 PM - 3:00 PM', contact: '987-654-3210', email: 'jane.smith@example.com', tags: ['Most Experienced'] },
-      // Add more mock doctors as needed
     ];
   };
 
-  const handleFixAppointment = (doctorId) => {
-    // Handle fixing the appointment with the selected doctor
-    console.log('Fixing appointment with doctor ID:', doctorId);
+  const handleFixAppointment = async () => {
+    const appointmentData = {
+      patient_id: '671b607a34ffb80c3c018d6a',
+      doctor_id: "671b5a36b5683674555b4009",
+      appointment_time: `${appointmentDate.toString()}T${startTime}:00Z`,
+      startTime: `${appointmentDate.toString()}T${startTime}:00Z`,
+      endTime: `${appointmentDate.toString()}T${endTime}:00Z`,
+      status: 'scheduled',
+      reason: 'routine check-up',
+      calendar_event_id: 'example_calendar_event_id',
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(appointmentData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fix appointment');
+      }
+
+      const data = await response.json();
+      console.log('Appointment fixed successfully:', data);
+      window.location.href = '/patient-app-history';
+
+    } catch (error) {
+      console.error('Error fixing appointment:', error);
+      alert('Failed to fix appointment. Please try again later.');
+    }
+    window.location.href = '/patient-app-history';
   };
 
   return (
@@ -56,9 +81,7 @@ const PatientAppointmentFixing: React.FC = () => {
               onChange={setAppointmentDate}
               isInvalid={isLimitedAvailability}
               errorMessage={
-                isLimitedAvailability
-                  ? 'Warning:Limited availability of doctors on weekends.'
-                  : undefined
+                isLimitedAvailability ? 'Warning: Limited availability of doctors on weekends.' : undefined
               }
               required
               variant="bordered"
@@ -111,15 +134,8 @@ const PatientAppointmentFixing: React.FC = () => {
                 <p>Email: {doctor.email}</p>
               </CardBody>
               <CardFooter>
-                <Button
-                    onClick={() => {
-                        handleFixAppointment(doctor.id);
-                        window.location.href = '/patient-app-history';
-                    }}
-                    color="primary"
-                    variant="bordered"
-                >
-                    Fix Appointment
+                <Button onClick={() => handleFixAppointment(doctor.id)} color="primary" variant="bordered">
+                  Fix Appointment
                 </Button>
               </CardFooter>
             </Card>
