@@ -27,7 +27,7 @@ export default function Settings() {
 
   const handleSignOut = () => {
     alert("Signed out");
-    router.push('/login');
+    router.push('/login-pat');
   };
 
   const handleImageUpload = (file: File | null) => {
