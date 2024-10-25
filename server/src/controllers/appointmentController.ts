@@ -9,7 +9,7 @@ dotenv.config();
 
 export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { patient_id, doctor_id, appointment_time, status, reason } = req.body;
+    const { patient_id, doctor_id, appointment_time,startTime,endTime, status, reason } = req.body;
 
     const patient = await PatientModel.findById(patient_id);
     const doctor = await DoctorModel.findById(doctor_id);
@@ -18,23 +18,14 @@ export const scheduleAppointment = async (req: Request, res: Response): Promise<
       return;
     }
 
-    // Check for the corresponding time slot
-    const timeSlot = await TimeSlotModel.findOne({
-      doctorId: doctor_id,
-      start: appointment_time,
-      isAvailable: true,
-    });
-
-    if (!timeSlot) {
-      res.status(400).json({ msg: 'Selected time slot is not available' });
-      return;
-    }
-
+   
     const appointment = new AppointmentModel({
       patient_id,
       doctor_id,
       appointment_time,
       status,
+      startTime,
+      endTime,
       reason,
     });
 
@@ -47,8 +38,6 @@ export const scheduleAppointment = async (req: Request, res: Response): Promise<
     }
 
     // Mark the time slot as unavailable
-    timeSlot.isAvailable = false; // Update the time slot's availability
-    await timeSlot.save(); // Save the updated time slot
 
     // Save the appointment
     await appointment.save();
