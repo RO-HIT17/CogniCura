@@ -5,7 +5,7 @@ dotenv.config();
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGO_URI;
+    const mongoURI = process.env.MONGO_URI!;
     const dbName = process.env.DB_NAME;
 
     const options: ConnectOptions = {
