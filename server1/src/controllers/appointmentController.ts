@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { AppointmentModel } from '../models/appointments'; 
 import { DoctorModel } from '../models/doctor'; 
 import { PatientModel } from '../models/patient'; 
-import { TimeSlotModel } from '../models/timeSlot'; // Ensure to import your TimeSlot model
+import { TimeSlotModel } from '../models/timeSlot'; 
 import { sendNotification } from '../utils/notifcationService';
 import dotenv from 'dotenv';
 dotenv.config(); 
@@ -29,7 +29,7 @@ export const scheduleAppointment = async (req: Request, res: Response): Promise<
       reason,
     });
 
-    // Send notification to the patient
+
     const patientMessage = `Your appointment with Dr. ${doctor.last_name} has been scheduled for ${appointment_time}.`;
     if (patient.email) {
       await sendNotification(patient.email, patient.phone, patientMessage);
@@ -37,9 +37,7 @@ export const scheduleAppointment = async (req: Request, res: Response): Promise<
       console.warn(`Patient with ID ${patient_id} has no email address. Notification not sent.`);
     }
 
-    // Mark the time slot as unavailable
-
-    // Save the appointment
+   
     await appointment.save();
     res.status(201).json({ success: true, data: appointment });
   } catch (error) {
@@ -59,26 +57,26 @@ export const updateAppointment = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Find the old time slot and mark it as available again
+
     const oldTimeSlot = await TimeSlotModel.findOne({
       doctorId: appointment.doctor_id,
       start: appointment.appointment_time,
     });
 
     if (oldTimeSlot) {
-      oldTimeSlot.isAvailable = true; // Mark the old time slot as available
+      oldTimeSlot.isAvailable = true; 
       await oldTimeSlot.save();
     }
 
-    // Update the appointment details
+    
     if (status) appointment.status = status;
     if (reason) appointment.reason = reason;
 
-    // Update the appointment time and mark the new time slot as unavailable
+    
     if (newAppointmentTime) {
       appointment.appointment_time = newAppointmentTime;
 
-      // Check if the new time slot is available
+      
       const newTimeSlot = await TimeSlotModel.findOne({
         doctorId: appointment.doctor_id,
         start: newAppointmentTime,
@@ -90,7 +88,7 @@ export const updateAppointment = async (req: Request, res: Response): Promise<vo
         return;
       }
 
-      // Mark the new time slot as unavailable
+      
       newTimeSlot.isAvailable = false;
       await newTimeSlot.save();
     }
@@ -127,14 +125,14 @@ export const deleteAppointment = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Find the time slot and mark it as available
+
     const timeSlot = await TimeSlotModel.findOne({
       doctorId: appointment.doctor_id,
       start: appointment.appointment_time,
     });
 
     if (timeSlot) {
-      timeSlot.isAvailable = true; // Mark the time slot as available again
+      timeSlot.isAvailable = true;
       await timeSlot.save();
     }
 

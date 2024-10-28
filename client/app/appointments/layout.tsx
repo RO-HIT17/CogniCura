@@ -4,7 +4,6 @@ import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import  DocNavbar  from "@/components/docnavbar";
 import { Providers } from "../providers";
-//import { useAuthCheck } from "../hoc/useAuthCheck";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
@@ -22,9 +21,7 @@ export default function DoctorAppointementLayout({
 }: {
   children: React.ReactNode;
 }) {
-  //const { loading, authenticated } = useAuthCheck();
-
-  //if (loading) return <div>Loading...</div>; 
+  
   return (
     <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
       <div className="relative flex flex-col h-screen">
