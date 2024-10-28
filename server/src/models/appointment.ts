@@ -26,10 +26,10 @@ const appointmentSchema: Schema = new Schema({
   symptoms: { type: String, required: true },
   location: { type: String, enum: Location, required: true },
   sendRemainders: { type: Boolean, required: true },
-  doc_id: { type: Schema.Types.ObjectId, ref: 'Doctor', required: true },
-  pat_id: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
-  starttime: { type: Date, required: true },
-  endtime: { type: Date, required: true },
+  doc_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  pat_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
+  starttime: { type: Date },
+  endtime: { type: Date },
 });
 
 export const AppointmentModel = model<IAppointment>('Appointment', appointmentSchema);

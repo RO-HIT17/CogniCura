@@ -30,5 +30,10 @@ export enum Location {
     MUMBAI = 'mumbai',
     DELHI = 'delhi',
     BANGALORE = 'bangalore',
+}
 
+export enum Status {
+    SCHEDULED = 'scheduled',
+    CANCELLED = 'cancelled',
+    COMPLETED = 'completed',
 }

@@ -11,6 +11,8 @@ export interface IDoctor extends Document {
     phone:number;
     role:Role;
     specialization:Specialization;
+    rating:number;
+    experience:number;
 }
 
 const doctorSchema:Schema = new Schema({
@@ -21,6 +23,8 @@ const doctorSchema:Schema = new Schema({
     password: { type: String, required: true },
     role: { type: String, enum: Role, default: Role.DOCTOR, required: true },
     specialization: { type: String, enum: Specialization,  required: true },
+    rating: { type: Number},
+    experience: { type: Number},
 });
 
 export const DoctorModel = model<IDoctor>('Doctor', doctorSchema);
