@@ -44,8 +44,14 @@ const PatientAppointmentFixing: React.FC = () => {
 
   const handleFixAppointment = async (doctorId: string) => {
     const appointmentData = {
+      patient_id: '671b607a34ffb80c3c018d6a', // Replace with actual patient ID
+      doctor_id: doctorId,
+      appointment_time: `${appointmentDate.toString()}T${startTime}:00Z`,
       startTime: `${appointmentDate.toString()}T${startTime}:00Z`,
       endTime: `${appointmentDate.toString()}T${endTime}:00Z`,
+      status: 'scheduled',
+      reason: 'routine check-up',
+      calendar_event_id: 'example_calendar_event_id',
     };
 
     try {
@@ -116,21 +122,18 @@ const PatientAppointmentFixing: React.FC = () => {
             <Card key={doctor._id}>
               <CardHeader>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                  <h4>{doctor.firstName}</h4>
+                  <h4>{doctor.firstName} {doctor.lastName}</h4>
                   <div>
-                    {doctor.tags.map((tag, index) => (
-                      <Chip key={index} color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
-                        {tag}
-                      </Chip>
-                    ))}
+                    <Chip color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
+                      {doctor.specialization}
+                    </Chip>
                   </div>
                 </div>
               </CardHeader>
               <CardBody>
-                <p>Rating: {doctor.rating}</p>
-                <p>Available Time: {doctor.availableTime}</p>
+                <p>Specialization: {doctor.specialization}</p>
                 <p>Date: {appointmentDate.toString()}</p>
-                <p>Contact: {doctor.contact}</p>
+                <p>Contact: {doctor.phone}</p>
                 <p>Email: {doctor.email}</p>
               </CardBody>
               <CardFooter>
