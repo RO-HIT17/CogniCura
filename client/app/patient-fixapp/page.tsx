@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Button, Calendar, Card, Spacer, Chip } from '@nextui-org/react';
 import { today, getLocalTimeZone, isWeekend } from '@internationalized/date';
 import { useLocale } from '@react-aria/i18n';
@@ -21,35 +21,40 @@ const PatientAppointmentFixing: React.FC = () => {
     if (isLimitedAvailability) {
       alert('Limited availability of doctors on weekends. Please be patient!');
     } else {
-      const doctors = await fetchAvailableDoctors(appointmentDate, startTime, endTime);
+      const doctors = await fetchAvailableDoctors();
       setAvailableDoctors(doctors);
       setView('doctors');
     }
     console.log('Appointment Date:', appointmentDate);
   };
 
-  const fetchAvailableDoctors = async (date, startTime, endTime) => {
-    return [
-      { id: 1, name: 'Dr. John Doe', rating: 4.5, availableTime: '10:00 AM - 12:00 PM', contact: '123-456-7890', email: 'john.doe@example.com', tags: ['Previously Visited', 'Most Experienced'] },
-      { id: 2, name: 'Dr. Jane Smith', rating: 4.7, availableTime: '1:00 PM - 3:00 PM', contact: '987-654-3210', email: 'jane.smith@example.com', tags: ['Most Experienced'] },
-    ];
+  const fetchAvailableDoctors = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/doctor/getAll/');
+      if (!response.ok) {
+        throw new Error('Failed to fetch doctors');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+      return [];
+    }
   };
 
-  const handleFixAppointment = async () => {
+  const handleFixAppointment = async (doctorId: string) => {
+    const pid=localStorage.getItem('p_id');
     const appointmentData = {
-      patient_id: '671b607a34ffb80c3c018d6a',
-      doctor_id: "671b5a36b5683674555b4009",
-      appointment_time: `${appointmentDate.toString()}T${startTime}:00Z`,
-      startTime: `${appointmentDate.toString()}T${startTime}:00Z`,
-      endTime: `${appointmentDate.toString()}T${endTime}:00Z`,
+      doc_id: doctorId,
+      starttime: `${appointmentDate.toString()}T${startTime}:00Z`,
+      endtime: `${appointmentDate.toString()}T${endTime}:00Z`,
       status: 'scheduled',
-      reason: 'routine check-up',
-      calendar_event_id: 'example_calendar_event_id',
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/appointments', {
-        method: 'POST',
+      const appid = localStorage.getItem('app_id');
+      const response = await fetch(`http://localhost:5000/api/appointments/update/${appid}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(appointmentData),
       });
@@ -66,7 +71,6 @@ const PatientAppointmentFixing: React.FC = () => {
       console.error('Error fixing appointment:', error);
       alert('Failed to fix appointment. Please try again later.');
     }
-    window.location.href = '/patient-app-history';
   };
 
   return (
@@ -113,28 +117,25 @@ const PatientAppointmentFixing: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {availableDoctors.map((doctor) => (
-            <Card key={doctor.id}>
+            <Card key={doctor._id}>
               <CardHeader>
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                  <h4>{doctor.name}</h4>
+                  <h4>{doctor.firstName} {doctor.lastName}</h4>
                   <div>
-                    {doctor.tags.map((tag, index) => (
-                      <Chip key={index} color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
-                        {tag}
-                      </Chip>
-                    ))}
+                    <Chip color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
+                      {doctor.specialization}
+                    </Chip>
                   </div>
                 </div>
               </CardHeader>
               <CardBody>
-                <p>Rating: {doctor.rating}</p>
-                <p>Available Time: {doctor.availableTime}</p>
+                <p>Specialization: {doctor.specialization}</p>
                 <p>Date: {appointmentDate.toString()}</p>
-                <p>Contact: {doctor.contact}</p>
+                <p>Contact: {doctor.phone}</p>
                 <p>Email: {doctor.email}</p>
               </CardBody>
               <CardFooter>
-                <Button onClick={() => handleFixAppointment(doctor.id)} color="primary" variant="bordered">
+                <Button onClick={() => handleFixAppointment(doctor._id)} color="primary" variant="bordered">
                   Fix Appointment
                 </Button>
               </CardFooter>

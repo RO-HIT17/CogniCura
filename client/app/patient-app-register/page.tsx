@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Input, Textarea, Checkbox, Button, Select, SelectItem } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
 
 const PatientAppointmentRegistration: React.FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -12,19 +13,47 @@ const PatientAppointmentRegistration: React.FC = () => {
   const [location, setLocation] = useState('');
   const [medicalRecords, setMedicalRecords] = useState<File | null>(null);
   const [sendReminders, setSendReminders] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+  const handleSubmit = async (e: React.FormEvent) => {
+    const pat_id = localStorage.getItem('p_id');
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('First Name:', firstName);
-    console.log('Last Name:', lastName);
-    console.log('Specialty:', specialty);
-    console.log('Reason for Visit:', reason);
-    console.log('Appointment Mode:', appointmentMode);
-    console.log('Symptoms:', symptoms);
-    console.log('Location:', location);
-    console.log('Medical Records:', medicalRecords);
-    console.log('Send Reminders:', sendReminders);
+
+    const appointmentData = {
+      firstName,
+      lastName,
+      specialityRequired: specialty,
+      reason,
+      mode: appointmentMode,
+      symptoms,
+      location,
+      sendRemainders: sendReminders,
+      pat_id,  
+      status: 'scheduled',
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/appointments/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(appointmentData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error:', errorData.message || 'Registration failed');
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Appointment created successfully:', data);
+      localStorage.setItem('app_id',data._id);
+      router.push('/patient-fixapp');
+
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
   };
 
   return (
@@ -58,9 +87,9 @@ const PatientAppointmentRegistration: React.FC = () => {
             variant="bordered"
             color="primary"
           >
-            <SelectItem key="Orthopedics" value="Orthopedics">Orthopedics</SelectItem>
-            <SelectItem key="Dermatology" value="Dermatology">Dermatology</SelectItem>
-            <SelectItem key="Cardiology" value="Cardiology">Cardiology</SelectItem>
+            <SelectItem key="orthopedics" value="orthopedics">Orthopedics</SelectItem>
+            <SelectItem key="general" value="general">General</SelectItem>
+            <SelectItem key="cardiology" value="cardiology">Cardiology</SelectItem>
             {/* Add more specialties as needed */}
           </Select>
           <Select
@@ -71,9 +100,9 @@ const PatientAppointmentRegistration: React.FC = () => {
             variant="bordered"
             color="primary"
           >
-            <SelectItem key="new consultation" value="new consultation">New Consultation</SelectItem>
-            <SelectItem key="follow-up" value="follow-up">Follow-up</SelectItem>
-            <SelectItem key="test results" value="test results">Test Results</SelectItem>
+            <SelectItem key="new_consultation" value="new_consultation">New Consultation</SelectItem>
+            <SelectItem key="follow_up" value="follow_up">Follow-up</SelectItem>
+            <SelectItem key="test_results" value="test_results">Test Results</SelectItem>
             {/* Add more reasons as needed */}
           </Select>
         </div>
@@ -86,8 +115,8 @@ const PatientAppointmentRegistration: React.FC = () => {
             variant="bordered"
             color="primary"
           >
-            <SelectItem key="In-person" value="In-person">In-person</SelectItem>
-            <SelectItem key="Teleconsultation" value="Teleconsultation">Online</SelectItem>
+            <SelectItem key="in_person" value="in_person">In-person</SelectItem>
+            <SelectItem key="online" value="online">Online</SelectItem>
           </Select>
         </div>
         <div>
@@ -109,10 +138,10 @@ const PatientAppointmentRegistration: React.FC = () => {
             variant="bordered"
             color="primary"
           >
-            <SelectItem key="Chennai" value="Chennai">Chennai</SelectItem>
-            <SelectItem key="Mumbai" value="Mumbai">Mumbai</SelectItem>
-            <SelectItem key="Delhi" value="Delhi">Delhi</SelectItem>
-            <SelectItem key="Bangalore" value="Bangalore">Bangalore</SelectItem>
+            <SelectItem key="chennai" value="chennai">Chennai</SelectItem>
+            <SelectItem key="mumbai" value="mumbai">Mumbai</SelectItem>
+            <SelectItem key="delhi" value="delhi">Delhi</SelectItem>
+            <SelectItem key="bangalore" value="bangalore">Bangalore</SelectItem>
             {/* Add more locations as needed */}
           </Select>
         </div>
@@ -136,7 +165,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             Send Reminders
           </Checkbox>
         </div>
-        <Button type="submit" color="primary" onClick={() => window.location.href = '/patient-fixapp'} >Schdule Appointment</Button>
+        <Button type="submit" color="primary" >Schedule Appointment</Button>
       </form>
     </div>
   );

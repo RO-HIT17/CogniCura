@@ -1,60 +1,71 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Spacer, Chip, Button } from '@nextui-org/react';
 import { CardHeader, CardBody, CardFooter } from '@nextui-org/card';
 
 const PatientAppointmentHistory: React.FC = () => {
-  // Mock data for demonstration
-  const appointmentHistory = [
-    {
-      id: 1,
-      doctorName: 'Dr. John Doe',
-      date: '2023-09-15',
-      time: '10:00 AM - 11:00 AM',
-      rating: 4.5,
-      contact: '123-456-7890',
-      email: 'john.doe@example.com',
-      tags: ['Cardiology', 'Follow-up'],
-    },
-    {
-      id: 2,
-      doctorName: 'Dr. Jane Smith',
-      date: '2023-08-20',
-      time: '2:00 PM - 3:00 PM',
-      rating: 4.7,
-      contact: '987-654-3210',
-      email: 'jane.smith@example.com',
-      tags: ['Dermatology', 'Consultation'],
-    },
-    {
-      id: 3,
-      doctorName: 'Dr. Emily Johnson',
-      date: '2023-10-10',
-      time: '1:00 PM - 2:00 PM',
-      rating: 4.9,
-      contact: '555-123-4567',
-      email: 'emily.johnson@example.com',
-      tags: ['Upcoming Appointment', 'New Appointment'],
-    },
-    {
-      id: 4,
-      doctorName: 'Dr. Michael Brown',
-      date: '2023-07-05',
-      time: '11:00 AM - 12:00 PM',
-      rating: 4.3,
-      contact: '444-555-6666',
-      email: 'michael.brown@example.com',
-      tags: ['Orthopedics', 'Surgery'],
-    },
-    // Add more mock appointments as needed
-  ];
+  const [appointmentHistory, setAppointmentHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const p_id = localStorage.getItem('p_id');
+      if (!p_id) {
+        setError('Patient ID not found in local storage');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/appointments/patient/${p_id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch appointments');
+        }
+        const data = await response.json();
+        console.log(data)
+        setAppointmentHistory(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const handleCancelAppointment = async (appointmentId: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/appointments/delete/${appointmentId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel appointment');
+      }
+
+      setAppointmentHistory(appointmentHistory.filter(appointment => appointment._id !== appointmentId));
+    } catch (error) {
+      console.error('Error cancelling appointment:', error);
+      alert('Failed to cancel appointment. Please try again later.');
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   // Sort the appointments: upcoming first, then by date in descending order
   const sortedAppointments = appointmentHistory.sort((a, b) => {
-    if (a.tags.includes('Upcoming Appointment')) return -1;
-    if (b.tags.includes('Upcoming Appointment')) return 1;
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
+    if (new Date(a.starttime) > new Date()) return -1;
+    if (new Date(b.starttime) > new Date()) return 1;
+    return new Date(b.starttime).getTime() - new Date(a.starttime).getTime();
   });
 
   return (
@@ -62,30 +73,38 @@ const PatientAppointmentHistory: React.FC = () => {
       <h1 className="text-2xl font-bold mb-6">Patient Appointment History</h1>
       <div className="space-y-4">
         {sortedAppointments.map((appointment) => (
-          <Card key={appointment.id}>
+          <Card key={appointment._id}>
             <CardHeader>
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <h4>{appointment.doctorName}</h4>
+                <h4>{appointment.firstName} {appointment.lastName}</h4>
                 <div>
-                  {appointment.tags.map((tag, index) => (
-                    <Chip key={index} color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
-                      {tag}
-                    </Chip>
-                  ))}
+                  <Chip color="primary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
+                    {appointment.specialityRequired}
+                  </Chip>
+                  <Chip color="secondary" variant="bordered" style={{ marginLeft: '0.5rem' }}>
+                    {appointment.reason}
+                  </Chip>
+                  <Chip color="success" variant="bordered" style={{ marginLeft: '0.5rem' }}>
+                    {appointment.mode}
+                  </Chip>
                 </div>
               </div>
             </CardHeader>
             <CardBody>
-              <p>Date: {appointment.date}</p>
-              <p>Time: {appointment.time}</p>
-              <p>Given Rating: {appointment.rating}</p>
-              <p>Contact: {appointment.contact}</p>
-              <p>Email: {appointment.email}</p>
+              <p>Doctor: {appointment.doc_id.firstName} {appointment.doc_id.lastName}</p>
+              <p>Date: {new Date(appointment.starttime).toLocaleDateString()}</p>
+              <p>Time: {new Date(appointment.starttime).toLocaleTimeString()} - {new Date(appointment.endtime).toLocaleTimeString()}</p>
+              <p>Symptoms: {appointment.symptoms}</p>
+              <p>Location: {appointment.location}</p>
+              <p>Send Reminders: {appointment.sendRemainders ? 'Yes' : 'No'}</p>
             </CardBody>
-            {appointment.tags.includes('Upcoming Appointment') && (
+            {new Date(appointment.starttime) > new Date() && (
               <CardFooter>
-                <Button color="primary" variant="bordered" onClick={() => window.location.href = '/patient-fixapp'}  >
+                <Button color="primary" variant="bordered" onClick={() => window.location.href = '/patient-fixapp'}>
                   Reschedule
+                </Button>
+                <Button color="error" variant="bordered" onClick={() => handleCancelAppointment(appointment._id)}>
+                  Cancel
                 </Button>
               </CardFooter>
             )}

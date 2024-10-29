@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AppointmentModel } from '../models/appointment';
 
+
 export const createAppointment = async (req: Request, res: Response): Promise<void> => {
   try {
     const appointment = new AppointmentModel(req.body);
@@ -54,6 +55,19 @@ export const deleteAppointmentById = async (req: Request, res: Response): Promis
       return;
     }
     res.status(200).json({ message: 'Appointment deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
+};
+
+export const getAppointmentsByPatientId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const appointments = await AppointmentModel.find({ pat_id: req.params.pat_id }).populate('doc_id', 'firstName lastName');
+    if (appointments.length === 0) {
+      res.status(404).json({ message: 'No appointments found for this patient' });
+      return;
+    }
+    res.status(200).json(appointments);
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
   }
