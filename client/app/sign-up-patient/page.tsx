@@ -49,7 +49,7 @@ const DoctorSignUpPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/doctor-signup', {
+      const response = await fetch('http://localhost:5000/api/patient/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,8 +57,8 @@ const DoctorSignUpPage: React.FC = () => {
         body: JSON.stringify({
           firstName,
           lastName,
-          phoneNumber,
-          email,
+          phone:phoneNumber,
+          email, 
           password,
         }),
       });

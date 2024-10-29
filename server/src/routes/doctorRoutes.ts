@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+    loginDoctor,
     createDoctor,
     getDoctorById,
     getAllDoctors,
@@ -9,10 +10,11 @@ import {
 
 const router = Router();
 
-router.post('/doctors', createDoctor);
-router.get('/doctors/:id', getDoctorById);
-router.get('/doctors', getAllDoctors);
-router.put('/doctors/:id', updateDoctorById);
-router.delete('/doctors/:id', deleteDoctorById);
+router.post('/login', loginDoctor);
+router.post('/create', createDoctor);
+router.get('/get/:id', getDoctorById);
+router.get('/getAll', getAllDoctors);
+router.put('/update/:id', updateDoctorById);
+router.delete('/delete/:id', deleteDoctorById);
 
 export default router;

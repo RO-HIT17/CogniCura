@@ -1,15 +1,42 @@
 import { Request, Response } from 'express';
 import { DoctorModel } from '../models/doctor';
+import bcrypt from 'bcrypt';
+import { generateToken } from '../utils/jwt';
 
 export const createDoctor = async (req: Request, res: Response): Promise<void> => {
   try {
-    const doctor = new DoctorModel(req.body);
+    const { password, ...doctorData } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const doctor = new DoctorModel({ ...doctorData, password: hashedPassword });
     await doctor.save();
     res.status(201).json(doctor);
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
   }
 };
+
+export const loginDoctor = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+    const doctor = await DoctorModel.findOne({ email });
+    if (!doctor) {
+      res.status(401).json({ message: 'Invalid email or password' });
+      return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, doctor.password);
+    if (!isPasswordValid) {
+      res.status(401).json({ message: 'Invalid email or password' });
+      return;
+    }
+
+    const token = generateToken(doctor._id.toString(), doctor.role);
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
+};
+
 
 export const getDoctorById = async (req: Request, res: Response): Promise<void> => {
   try {

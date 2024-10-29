@@ -22,7 +22,7 @@ const doctorSchema:Schema = new Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: Role, default: Role.DOCTOR, required: true },
-    specialization: { type: String, enum: Specialization,  required: true },
+    specialization: { type: String, enum: Specialization },
     rating: { type: Number},
     experience: { type: Number},
 });

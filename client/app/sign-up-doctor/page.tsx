@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, FormEvent } from 'react'; 
-import { Button, Input, Spacer, Select, SelectItem } from "@nextui-org/react";
+import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import {
   Card,
   CardHeader,
@@ -40,6 +40,13 @@ const DoctorSignUpPage: React.FC = () => {
     });
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      specialization: e.target.value,
+    });
+  };
+
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -51,7 +58,7 @@ const DoctorSignUpPage: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/doctor-signup', {
+      const response = await fetch('http://localhost:5000/api/doctor/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +66,7 @@ const DoctorSignUpPage: React.FC = () => {
         body: JSON.stringify({
           firstName,
           lastName,
-          phoneNumber,
+          phone: phoneNumber,
           email,
           password,
           specialization,
@@ -74,7 +81,7 @@ const DoctorSignUpPage: React.FC = () => {
 
       const data = await response.json();
       console.log('Doctor registered successfully:', data);
-
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error('Error during registration:', error);
       setError('An error occurred during registration');
@@ -166,23 +173,22 @@ const DoctorSignUpPage: React.FC = () => {
               required
               className="bg-transparent"
               value={formData.specialization}
-              onChange={(e) => handleChange(e as any)}
+              onChange={(e) => handleSelectChange(e as React.ChangeEvent<HTMLSelectElement>)}
             >
-              <SelectItem key="general" value="General">General</SelectItem>
-              <SelectItem key="ent" value="ENT">ENT</SelectItem>
-              <SelectItem key="cardiology" value="Cardiology">Cardiology</SelectItem>
-              <SelectItem key="neurology" value="Neurology">Neurology</SelectItem>
-              <SelectItem key="orthopedics" value="Orthopedics">Orthopedics</SelectItem>
-              <SelectItem key="pediatrics" value="Pediatrics">Pediatrics</SelectItem>
-              <SelectItem key="other" value="Other">Other</SelectItem>
+              <SelectItem key="general" value="general">General</SelectItem>
+              <SelectItem key="ent" value="ent">ENT</SelectItem>
+              <SelectItem key="cardiology" value="cardiology">Cardiology</SelectItem>
+              <SelectItem key="neurology" value="neurology">Neurology</SelectItem>
+              <SelectItem key="orthopedics" value="orthopedics">Orthopedics</SelectItem>
+              <SelectItem key="pediatrics" value="pediatrics">Pediatrics</SelectItem>
+              <SelectItem key="other" value="other">Other</SelectItem>
             </Select>
-            
+
             <Button 
               type="submit" 
               className="mt-2 border border-blue-500" 
               color="gradient" 
               auto
-              onClick={() => window.location.href = '/dashboard'}
             >
               Sign Up
             </Button>
