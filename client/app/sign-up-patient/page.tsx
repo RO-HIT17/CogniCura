@@ -71,7 +71,7 @@ const DoctorSignUpPage: React.FC = () => {
 
       const data = await response.json();
       console.log('Doctor registered successfully:', data);
-
+      localStorage.setItem('p_id', data._id); 
     } catch (error) {
       console.error('Error during registration:', error);
       setError('An error occurred during registration');

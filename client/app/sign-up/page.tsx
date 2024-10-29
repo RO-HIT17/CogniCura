@@ -82,6 +82,7 @@ const SignUpPage: React.FC = () => {
 
       const data = await response.json();
       console.log('User registered successfully:', data);
+      localStorage.setItem('p_id',data._id);
 
     } catch (error) {
       console.error('Error during registration:', error);
