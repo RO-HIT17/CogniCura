@@ -24,14 +24,9 @@ import {
 } from "@/components/icons";
 import { User } from "@nextui-org/user";
 
-
 const Navbar = () => {
   return (
-    <NextUINavbar
-      maxWidth="full"
-      className="w-full"
-      position="sticky"
-    >
+    <NextUINavbar maxWidth="full" className="w-full" position="sticky">
       <NavbarContent className="basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/patdashboard">
@@ -67,7 +62,15 @@ const Navbar = () => {
               History
             </NextLink>
           </NavbarItem>
-
+          <NavbarItem>
+            <NextLink
+              className={clsx(linkStyles({ color: "foreground" }))}
+              color="foreground"
+              href="/ai-assistant"
+            >
+              AI Assistant
+            </NextLink>
+          </NavbarItem>
           <NavbarItem>
             <NextLink
               className={clsx(linkStyles({ color: "foreground" }))}
@@ -80,10 +83,7 @@ const Navbar = () => {
         </ul>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-full"
-        justify="end"
-      >
+      <NavbarContent className="hidden sm:flex basis-full" justify="end">
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
@@ -100,34 +100,27 @@ const Navbar = () => {
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
           <NavbarMenuItem>
-            <Link
-              color="foreground"
-              href="/patdashboard"
-            >
+            <Link color="foreground" href="/patdashboard">
               Home
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem>
-            <Link
-              color="foreground"
-              href="/patient-app-register"
-            >
+            <Link color="foreground" href="/patient-app-register">
               Registration
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem>
-            <Link
-              color="foreground"
-              href="/patient-app-history"
-            >
+            <Link color="foreground" href="/patient-app-history">
               History
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem>
-            <Link
-              color="foreground"
- href="/settings"
-            >
+            <Link color="foreground" href="/ai-assistant">
+              AI Assistant
+            </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Link color="foreground" href="/settings">
               Settings
             </Link>
           </NavbarMenuItem>
