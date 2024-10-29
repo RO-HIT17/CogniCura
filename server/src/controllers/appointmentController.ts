@@ -72,3 +72,16 @@ export const getAppointmentsByPatientId = async (req: Request, res: Response): P
     res.status(400).json({ error: (error as Error).message });
   }
 };
+
+export const getAppointmentsByDoctorId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const appointments = await AppointmentModel.find({ doc_id: req.params.doc_id }).populate('pat_id', 'firstName lastName email phone');
+    if (appointments.length === 0) {
+      res.status(404).json({ message: 'No appointments found for this doctor' });
+      return;
+    }
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
+};

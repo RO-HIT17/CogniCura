@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card';
-import { Input } from '@nextui-org/react';
-import {Pagination} from "@nextui-org/react";
+import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardBody } from '@nextui-org/card';
+import { Input, Button, Select, SelectItem, Spacer } from '@nextui-org/react';
 import {
   Table,
   TableHeader,
@@ -11,57 +10,93 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Spacer,
 } from '@nextui-org/react';
 
-interface PatientVisit {
-  visitDate: string;
-  patientName: string;
+interface Appointment {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  specialityRequired: string;
   reason: string;
+  mode: string;
+  symptoms: string;
+  location: string;
+  sendRemainders: boolean;
+  pat_id: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
+  doc_id: string;
+  endtime: string;
+  starttime: string;
+  status: string;
 }
 
-const patientVisitData: PatientVisit[] = [
-  { visitDate: "2024-04-05", patientName: "Emily Parker", reason: "Skin Allergy" },
-  { visitDate: "2024-04-10", patientName: "Michael Brown", reason: "Dental Check-up" },
-  { visitDate: "2024-04-15", patientName: "Jessica Taylor", reason: "Physical Therapy" },
-  { visitDate: "2024-05-01", patientName: "Daniel Wilson", reason: "Routine Check-up" },
-  { visitDate: "2024-05-10", patientName: "Olivia Martinez", reason: "Blood Pressure Monitoring" },
-  { visitDate: "2024-05-20", patientName: "Nathan Lee", reason: "Diabetes Check" },
-  { visitDate: "2024-06-01", patientName: "Sophia Clark", reason: "Asthma Management" },
-  { visitDate: "2024-06-15", patientName: "Lucas Walker", reason: "Annual Check-up" },
-  { visitDate: "2024-06-20", patientName: "Isabella Hall", reason: "Weight Management" },
-  { visitDate: "2024-07-01", patientName: "Alexander Adams", reason: "Cholesterol Test" },
-  { visitDate: "2024-07-15", patientName: "Chloe Davis", reason: "Sports Injury Consultation" },
-  { visitDate: "2024-07-25", patientName: "Liam Roberts", reason: "Vision Test" },
-  { visitDate: "2024-08-05", patientName: "Amelia Robinson", reason: "Flu Symptoms" },
-  { visitDate: "2024-08-20", patientName: "James Lewis", reason: "Heart Check-up" },
-  { visitDate: "2024-09-01", patientName: "Ava Evans", reason: "Pregnancy Check-up" },
-  { visitDate: "2024-09-15", patientName: "Ethan Turner", reason: "Kidney Health Monitoring" },
-  { visitDate: "2024-09-20", patientName: "Lily Thompson", reason: "General Consultation" },
-  { visitDate: "2024-10-05", patientName: "William Campbell", reason: "Mental Health Check" },
-  { visitDate: "2024-10-15", patientName: "Grace White", reason: "Nutrition Counseling" },
-  { visitDate: "2024-10-25", patientName: "Benjamin Harris", reason: "Back Pain Consultation" },
-  { visitDate: "2024-11-01", patientName: "Mia Young", reason: "Sleep Disorder Consultation" },
-  { visitDate: "2024-11-10", patientName: "Ella King", reason: "ENT Consultation" },
-  { visitDate: "2024-11-20", patientName: "Aiden Scott", reason: "Post-Surgery Check-up" },
-  { visitDate: "2024-12-01", patientName: "Zoe Green", reason: "Skin Rash Consultation" },
-  { visitDate: "2024-12-15", patientName: "Henry Edwards", reason: "Joint Pain Consultation" },
-  { visitDate: "2024-12-20", patientName: "Layla Martinez", reason: "Dental Cleaning" }
-];
-
-
 const PatientVisitHistoryPage: React.FC = () => {
+  const [appointmentsData, setAppointmentsData] = useState<Appointment[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedMode, setSelectedMode] = useState<string>('All');
+  const [selectedAppointment, setSelectedAppointment] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const filteredVisits = patientVisitData.filter(visit =>
-    visit.patientName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const d_id = localStorage.getItem('d_id');
+      if (!d_id) {
+        setError('Doctor ID not found in local storage');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/appointments/doctor/${d_id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch appointments');
+        }
+        const data = await response.json();
+        setAppointmentsData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const filteredAppointments = appointmentsData.filter(appointment => {
+    const isPastAppointment = new Date(appointment.starttime) <= new Date();
+    const matchesSearchTerm = appointment.pat_id.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || appointment.pat_id.lastName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesMode = selectedMode === 'All' || appointment.mode === selectedMode;
+    return isPastAppointment && matchesSearchTerm && matchesMode;
+  });
+
+  const sortedFilteredAppointments = filteredAppointments.sort((a, b) => {
+    return new Date(b.starttime).getTime() - new Date(a.starttime).getTime();
+  });
+
+  const handleViewDetails = (index: number) => {
+    setSelectedAppointment(selectedAppointment === index ? null : index);
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-[url('/medical-bg.jpg')] bg-cover bg-center">
-      <Card className="mx-auto w-[900px] p-6 rounded-lg shadow-lg mt-10">
+      <Card className="mx-auto w-[1200px] p-6 rounded-lg shadow-lg mt-10">
         <CardHeader className="text-center">
-          <h2 className="text-xl font-bold text-blue-500">Patient Visit History</h2>
+          <h2 className="text-xl font-bold text-blue-500">Past Appointments</h2>
           <Spacer y={1} />
           <Input
             clearable
@@ -71,38 +106,76 @@ const PatientVisitHistoryPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <Spacer x={2} />
+          <Select
+            placeholder="Select Appointment Mode"
+            className="w-full mb-4"
+            value={selectedMode}
+            onChange={(e) => setSelectedMode(e.target.value)}
+          >
+            <SelectItem key="all" value="All">All</SelectItem>
+            <SelectItem key="online" value="Online">Online</SelectItem>
+            <SelectItem key="offline" value="Offline">Offline</SelectItem>
+          </Select>
+          <Spacer y={1} />
         </CardHeader>
         <CardBody>
-          <Table aria-label="Patient Visit History" shadow={false} bordered>
+          <Table aria-label="Past Appointments" shadow={false} bordered>
             <TableHeader>
-              <TableColumn>Visit Date</TableColumn>
+              <TableColumn>Date</TableColumn>
+              <TableColumn>Time</TableColumn>
               <TableColumn>Patient</TableColumn>
-              <TableColumn>Reason</TableColumn>
+              <TableColumn>Contact</TableColumn>
+              <TableColumn>Appointment Mode</TableColumn>
+              <TableColumn>Status</TableColumn>
+              <TableColumn>Actions</TableColumn>
             </TableHeader>
             <TableBody>
-              {filteredVisits.length > 0 ? (
-                filteredVisits.map((visit, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{visit.visitDate}</TableCell>
-                    <TableCell>{visit.patientName}</TableCell>
-                    <TableCell>{visit.reason}</TableCell>
+              {sortedFilteredAppointments.length > 0 ? (
+                sortedFilteredAppointments.map((appointment, index) => (
+                  <TableRow key={appointment._id}>
+                    <TableCell>{new Date(appointment.starttime).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(appointment.starttime).toLocaleTimeString()}</TableCell>
+                    <TableCell>{appointment.firstName} {appointment.lastName}</TableCell>
+                    <TableCell>{appointment.pat_id.phone}</TableCell>
+                    <TableCell>{appointment.mode}</TableCell>
+                    <TableCell>{appointment.status}</TableCell>
+                    <TableCell>
+                      <Button 
+                        onClick={() => handleViewDetails(index)} 
+                        size="sm" 
+                        color="primary"
+                      >
+                        View Details
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center text-gray-500">
-                    No patient visits found for this search.
+                  <TableCell colSpan={7} className="text-center text-gray-500">
+                    No past appointments found for this search.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
-            
           </Table>
-          <Spacer x={10}/>
+          {selectedAppointment !== null && (
+            <div className="mt-4">
+              <h3 className="font-bold text-lg">Appointment Details</h3>
+              <p><strong>Reason:</strong> {sortedFilteredAppointments[selectedAppointment].reason}</p>
+              <p><strong>Symptoms:</strong> {sortedFilteredAppointments[selectedAppointment].symptoms}</p>
+              <p><strong>Location:</strong> {sortedFilteredAppointments[selectedAppointment].location}</p>
+              <p><strong>Send Reminders:</strong> {sortedFilteredAppointments[selectedAppointment].sendRemainders ? 'Yes' : 'No'}</p>
+              <p><strong>Attached Files:</strong></p>
+              <ul>
+                {sortedFilteredAppointments[selectedAppointment].files?.map((file, idx) => (
+                  <li key={idx}>{file}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </CardBody>
-        <CardFooter className="text-center text-sm text-gray-400">
-          Patient visit history details.
-        </CardFooter>
       </Card>
     </div>
   );
