@@ -40,7 +40,25 @@ function PatientDashboard() {
             View Appointment History
           </Button>
         </NextLink>
+      </div>
 
+      <div className="inline-block max-w-xl text-center justify-center mt-8">
+        <span className={title({ color: "green" })}>Introducing Our New AI Assistant</span>
+        <br />
+        <span className={subtitle({ class: "mt-4" })}>
+          Our AI Assistant helps you diagnose your symptoms and recommends the best doctors for your condition.
+        </span>
+      </div>
+
+      <div className="flex gap-3 mt-4">
+        <NextLink
+          className="inline-block"
+          href="/ai-assistant"
+        >
+          <Button auto color="success" radius="full" variant="shadow">
+            Try AI Assistant
+          </Button>
+        </NextLink>
       </div>
     </section>
   );
