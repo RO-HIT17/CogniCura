@@ -18,7 +18,6 @@ export const scheduleAppointment = async (req: Request, res: Response): Promise<
       return;
     }
 
-   
     const appointment = new AppointmentModel({
       patient_id,
       doctor_id,

@@ -53,7 +53,7 @@ function PatientDashboard() {
       <div className="flex gap-3 mt-4">
         <NextLink
           className="inline-block"
-          href="/ai-assistant"
+          href="/AI-assistant"
         >
           <Button auto color="success" radius="full" variant="shadow">
             Try AI Assistant

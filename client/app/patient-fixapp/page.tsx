@@ -43,6 +43,7 @@ const PatientAppointmentFixing: React.FC = () => {
   };
 
   const handleFixAppointment = async (doctorId: string) => {
+
     const pid=localStorage.getItem('p_id');
     const appointmentData = {
       doc_id: doctorId,
@@ -65,7 +66,29 @@ const PatientAppointmentFixing: React.FC = () => {
 
       const data = await response.json();
       console.log('Appointment fixed successfully:', data);
+      try {
+      const response2 = await fetch('http://localhost:5000/api/appointments/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pat_id: pid,
+          doc_id:doctorId,
+          startTime: `${appointmentDate.toString()}T${startTime}:00Z`,
+          endTime: `${appointmentDate.toString()}T${endTime}:00Z`,
+        }),
+      });
+      if(!response2.ok){
+      alert('Appointment fixed successfully. Check your email for confirmation.');
+      
+      }
       window.location.href = '/patient-app-history';
+    }
+    catch (error) {
+      console.error('Error scheduling appointment:', error);
+      alert('Failed to schedule appointment. Please try again later.');
+    }
 
     } catch (error) {
       console.error('Error fixing appointment:', error);

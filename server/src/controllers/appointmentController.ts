@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { AppointmentModel } from '../models/appointment';
-
+import { sendNotification } from '../utils/notificationService';
+import { PatientModel } from '../models/patient';
+import { DoctorModel } from '../models/doctor';
 
 export const createAppointment = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -11,6 +13,33 @@ export const createAppointment = async (req: Request, res: Response): Promise<vo
     res.status(400).json({ error: (error as Error).message });
   }
 };
+
+export const scheduleAppointment = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { pat_id, doc_id, startTime, endTime } = req.body;
+
+    const patient = await PatientModel.findById(pat_id);
+    const doctor = await DoctorModel.findById(doc_id);
+    if (!patient || !doctor) {
+      res.status(404).json({ msg: 'Patient or Doctor not found' });
+      return;
+    }
+
+    const patientMessage = `Your appointment with Dr. ${doctor.firstName} ${doctor.lastName} has been scheduled between ${startTime} and ${endTime}.`;
+    if (patient.email) {
+      await sendNotification(patient.email, patient.phone.toString(), patientMessage);
+    } else {
+      console.warn(`Patient with ID ${pat_id} has no email address. Notification not sent.`);
+    }
+
+   
+    res.status(201).json({ success: true, data: patientMessage });
+  } catch (error) {
+    console.error('Error scheduling appointment:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 
 export const getAppointmentById = async (req: Request, res: Response): Promise<void> => {
   try {
