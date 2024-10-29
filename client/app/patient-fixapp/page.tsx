@@ -43,20 +43,18 @@ const PatientAppointmentFixing: React.FC = () => {
   };
 
   const handleFixAppointment = async (doctorId: string) => {
+    const pid=localStorage.getItem('p_id');
     const appointmentData = {
-      patient_id: '671b607a34ffb80c3c018d6a', // Replace with actual patient ID
-      doctor_id: doctorId,
-      appointment_time: `${appointmentDate.toString()}T${startTime}:00Z`,
-      startTime: `${appointmentDate.toString()}T${startTime}:00Z`,
-      endTime: `${appointmentDate.toString()}T${endTime}:00Z`,
+      doc_id: doctorId,
+      starttime: `${appointmentDate.toString()}T${startTime}:00Z`,
+      endtime: `${appointmentDate.toString()}T${endTime}:00Z`,
       status: 'scheduled',
-      reason: 'routine check-up',
-      calendar_event_id: 'example_calendar_event_id',
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/appointments/create', {
-        method: 'POST',
+      const appid = localStorage.getItem('app_id');
+      const response = await fetch(`http://localhost:5000/api/appointments/update/${appid}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(appointmentData),
       });

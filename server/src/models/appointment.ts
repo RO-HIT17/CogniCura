@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-import { Specialization, Reason, AppointmentMode, Location } from './enums';
+import { Specialization, Reason, AppointmentMode, Location,Status } from './enums';
 
 export interface IAppointment extends Document {
   _id: string;
@@ -15,6 +15,7 @@ export interface IAppointment extends Document {
   pat_id: Schema.Types.ObjectId; 
   starttime: Date;
   endtime: Date;
+  status:Status;
 }
 
 const appointmentSchema: Schema = new Schema({
@@ -25,6 +26,7 @@ const appointmentSchema: Schema = new Schema({
   mode: { type: String, enum: AppointmentMode, required: true },
   symptoms: { type: String, required: true },
   location: { type: String, enum: Location, required: true },
+  status: { type: String, enum: Status, required: true },
   sendRemainders: { type: Boolean, required: true },
   doc_id: { type: Schema.Types.ObjectId, ref: 'Doctor' },
   pat_id: { type: Schema.Types.ObjectId, ref: 'Patient' },
