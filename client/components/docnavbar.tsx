@@ -17,18 +17,17 @@ import withAuth from '@/app/hoc/withAuth';
 import { siteConfig } from '@/config/site';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { TwitterIcon, GithubIcon, DiscordIcon, Logo } from '@/components/icons';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation';
 
 const DocNavbar = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Remove authentication tokens from localStorage
+    
     localStorage.removeItem('authToken');
     localStorage.removeItem('p_id');
     localStorage.removeItem('d_id');
 
-    // Redirect to the base page
     router.push('/');
   };
 

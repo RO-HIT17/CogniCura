@@ -90,7 +90,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             <SelectItem key="orthopedics" value="orthopedics">Orthopedics</SelectItem>
             <SelectItem key="general" value="general">General</SelectItem>
             <SelectItem key="cardiology" value="cardiology">Cardiology</SelectItem>
-            {/* Add more specialties as needed */}
+            
           </Select>
           <Select
             label="Reason for Visit"
@@ -103,7 +103,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             <SelectItem key="new_consultation" value="new_consultation">New Consultation</SelectItem>
             <SelectItem key="follow_up" value="follow_up">Follow-up</SelectItem>
             <SelectItem key="test_results" value="test_results">Test Results</SelectItem>
-            {/* Add more reasons as needed */}
+            
           </Select>
         </div>
         <div>
@@ -142,7 +142,7 @@ const PatientAppointmentRegistration: React.FC = () => {
             <SelectItem key="mumbai" value="mumbai">Mumbai</SelectItem>
             <SelectItem key="delhi" value="delhi">Delhi</SelectItem>
             <SelectItem key="bangalore" value="bangalore">Bangalore</SelectItem>
-            {/* Add more locations as needed */}
+            
           </Select>
         </div>
         <br></br>

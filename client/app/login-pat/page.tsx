@@ -2,14 +2,13 @@
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; 
 import { useState } from 'react'; 
-import { Button, Input, Spacer } from "@nextui-org/react"; 
+import { Button, Input } from "@nextui-org/react"; 
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
-} from "@nextui-org/card"; 
-import { FaGoogle, FaLinkedin } from "react-icons/fa"; 
+} from "@nextui-org/card";  
 import { title } from "@/components/primitives";
 
 export const description =

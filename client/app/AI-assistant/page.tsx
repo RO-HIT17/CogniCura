@@ -3,9 +3,8 @@
 import { Button } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Skeleton } from "@nextui-org/react";
-import { PaperClipIcon } from "@heroicons/react/24/outline"; // Import PaperClip icon
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation"; 
 import { title } from "@/components/primitives";
 
 export default function Component() {
@@ -14,8 +13,8 @@ export default function Component() {
   const [submittedInput, setSubmittedInput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
-  const [showInstructions, setShowInstructions] = useState(true); // State for showing the instructions
-  const router = useRouter(); // Initialize useRouter
+  const [showInstructions, setShowInstructions] = useState(true); 
+  const router = useRouter(); 
 
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
@@ -23,13 +22,13 @@ export default function Component() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowInstructions(false); // Hide the instructions after submission
+    setShowInstructions(false); 
     setSubmittedInput(userInput);
     setUserInput("");
     setResponse(null);
     setIsLoading(true);
 
-    // Simulate an API call to get the disease and doctor recommendations
+  
     setTimeout(() => {
       const mockResponse = {
         disease: "Common Cold",
@@ -49,7 +48,6 @@ export default function Component() {
 
   return (
     <div className="flex flex-col h-screen justify-between p-4">
-      {/* Conditionally render the instruction content */}
       {showInstructions && (
         <div className="flex-grow flex items-center justify-center">
           <div className="inline-block max-w-xl text-center mb-4">
@@ -62,7 +60,6 @@ export default function Component() {
         </div>
       )}
 
-      {/* This section stays even after submission */}
       <div className="flex-grow flex flex-col items-start justify-start overflow-y-auto mb-4 space-y-4">
         {submittedInput && (
           <div className="text-white p-3 rounded-lg self-end w-fit shadow-md bg-gray-800 bg-opacity-45 text-white">
@@ -97,8 +94,7 @@ export default function Component() {
             </div>
         )}
       </div>
-
-      {/* Form to handle user input */}
+      
       <form onSubmit={handleSubmit} >
         <Textarea
           id="message"

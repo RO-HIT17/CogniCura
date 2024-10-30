@@ -1,11 +1,9 @@
 'use client';
-import { Link } from "@nextui-org/link";
+
 import { Button } from "@nextui-org/button";
 import NextLink from "next/link";
 import withAuth from '../hoc/withAuth';
-import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
 
 function DoctorDashboard() {
   return (
