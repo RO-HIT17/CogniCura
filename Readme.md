@@ -1,7 +1,6 @@
-```markdown
-# Sparkathon Healthcare App
+# Healthcare App
 
-Built for Sparkathon by team **CodeCrusaders**, this Healthcare App leverages modern web technologies to provide a seamless experience for managing healthcare appointments, patient history, and AI-assisted diagnostics.
+Built for Sparkathon by team **Code Crusaders**, this Healthcare App leverages modern web technologies to provide a seamless experience for managing healthcare appointments, patient history, and AI-assisted diagnostics.
 
 ---
 
@@ -185,4 +184,3 @@ Special thanks to the following technologies and libraries:
 - **Node.js**
 - **Nodemailer**
 - **Twilio**
-```
