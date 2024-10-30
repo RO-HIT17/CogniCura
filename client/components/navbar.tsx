@@ -22,9 +22,21 @@ import {
   DiscordIcon,
   Logo,
 } from "@/components/icons";
-import { User } from "@nextui-org/user";
+import { useRouter } from "next/navigation"; 
 
 const Navbar = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("p_id");
+    localStorage.removeItem("d_id");
+    localStorage.removeItem("app_id");
+   
+    router.push("/");
+  };
+
   return (
     <NextUINavbar maxWidth="full" className="w-full" position="sticky">
       <NavbarContent className="basis-full" justify="start">
@@ -66,7 +78,7 @@ const Navbar = () => {
             <NextLink
               className={clsx(linkStyles({ color: "foreground" }))}
               color="foreground"
-              href="/ai-assistant"
+              href="/AI-assistant"
             >
               AI Assistant
             </NextLink>
@@ -86,6 +98,11 @@ const Navbar = () => {
       <NavbarContent className="hidden sm:flex basis-full" justify="end">
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
+        </NavbarItem>
+        <NavbarItem>
+          <Button color="error" variant="bordered" onClick={handleLogout}>
+            Logout
+          </Button>
         </NavbarItem>
       </NavbarContent>
 
@@ -123,6 +140,11 @@ const Navbar = () => {
             <Link color="foreground" href="/settings">
               Settings
             </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Button color="error" variant="flat" onClick={handleLogout}>
+              Logout
+            </Button>
           </NavbarMenuItem>
         </div>
       </NavbarMenu>

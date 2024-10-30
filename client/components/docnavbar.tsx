@@ -17,9 +17,21 @@ import withAuth from '@/app/hoc/withAuth';
 import { siteConfig } from '@/config/site';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { TwitterIcon, GithubIcon, DiscordIcon, Logo } from '@/components/icons';
-import { User } from '@nextui-org/user';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 const DocNavbar = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Remove authentication tokens from localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('p_id');
+    localStorage.removeItem('d_id');
+
+    // Redirect to the base page
+    router.push('/');
+  };
+
   return (
     <NextUINavbar maxWidth="full" className="w-full" position="sticky">
       <NavbarContent className="basis-full" justify="start">
@@ -73,6 +85,11 @@ const DocNavbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
+        <NavbarItem>
+          <Button color="error" variant="bordered" onClick={handleLogout}>
+            Logout
+          </Button>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
@@ -104,6 +121,11 @@ const DocNavbar = () => {
             <Link color="foreground" href="/settings">
               Settings
             </Link>
+          </NavbarMenuItem>
+          <NavbarMenuItem>
+            <Button color="error" variant="flat" onClick={handleLogout}>
+              Logout
+            </Button>
           </NavbarMenuItem>
         </div>
       </NavbarMenu>
