@@ -9,6 +9,8 @@ export interface IPatient extends Document {
     password:string;
     phone:number;
     role:Role;
+    otp?: string;
+    otpExpiration?: number;
 }
 
 const patientSchema:Schema = new Schema({
@@ -18,6 +20,8 @@ const patientSchema:Schema = new Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: Role, default: Role.PATIENT, required: true },
+    otp: { type: String },
+    otpExpiration: { type: Number },
 });
 
 export const PatientModel = model<IPatient>('Patient', patientSchema);

@@ -93,7 +93,7 @@ export const description =
                 animated
                 className="bg-transparent"
               />
-              <Link href="/forgot-password" legacyBehavior>
+              <Link href="/forgot-password-pat" legacyBehavior>
                 <a className="text-blue-300 text-sm mt-1">Forgot Password?</a>
               </Link>
             </div>

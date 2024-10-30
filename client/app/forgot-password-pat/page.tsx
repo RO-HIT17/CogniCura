@@ -96,7 +96,7 @@ export default function ForgotPasswordForm() {
       return;
     }
     try {
-      const response = await fetch('http://localhost:5000/api/otp/doc/reset-password', {
+      const response = await fetch('http://localhost:5000/api/otp/pat/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function ForgotPasswordForm() {
       setSuccess('Password has been reset successfully');
       setNewPassword('');
       setConfirmPassword('');
-      router.push('/login-doc');
+      router.push('/login-pat');
     } catch (error) {
       console.error('Error resetting password:', error);
       setError('An error occurred while resetting password');
@@ -214,7 +214,7 @@ export default function ForgotPasswordForm() {
         <CardFooter className="text-center">
           <p className="text-gray-400">
             Remember your password?{" "}
-            <Link href="/login-doc" legacyBehavior>
+            <Link href="/login-pat" legacyBehavior>
               <a className="text-blue-300">Login</a>
             </Link>
           </p>

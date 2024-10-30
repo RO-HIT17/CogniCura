@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
       const token = localStorage.getItem('authToken');
 
       if (!token) {
-        router.push('/login');
+        router.push('/base-page');
       } else {
         setIsAuthenticated(true); // Mark as authenticated if token exists
       }

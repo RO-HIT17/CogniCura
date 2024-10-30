@@ -13,6 +13,8 @@ export interface IDoctor extends Document {
     specialization:Specialization;
     rating:number;
     experience:number;
+    otp?: string;
+    otpExpiration?: number;
 }
 
 const doctorSchema:Schema = new Schema({
@@ -25,6 +27,8 @@ const doctorSchema:Schema = new Schema({
     specialization: { type: String, enum: Specialization },
     rating: { type: Number},
     experience: { type: Number},
+    otp: { type: String },
+    otpExpiration: { type: Number },
 });
 
 export const DoctorModel = model<IDoctor>('Doctor', doctorSchema);

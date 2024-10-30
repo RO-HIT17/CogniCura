@@ -5,6 +5,7 @@ import connectDB from './config/db';
 import doctorRoutes from './routes/doctorRoutes';
 import patientRoutes from './routes/patientRoutes';
 import appointmentRoutes from './routes/appointmentRoutes';
+import otpRoutes from './routes/otpRoutes';
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/doctor', doctorRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/otp', otpRoutes);
 
 const PORT = process.env.PORT;
 
