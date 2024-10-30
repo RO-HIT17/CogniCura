@@ -67,7 +67,12 @@ const PatientAppointmentHistory: React.FC = () => {
     if (new Date(b.starttime) > new Date()) return 1;
     return new Date(b.starttime).getTime() - new Date(a.starttime).getTime();
   });
-
+  const formatHour = (dateString: string) => {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    return hours;
+  };
+  
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Patient Appointment History</h1>
@@ -93,7 +98,7 @@ const PatientAppointmentHistory: React.FC = () => {
             <CardBody>
               <p>Doctor: {appointment.doc_id.firstName} {appointment.doc_id.lastName}</p>
               <p>Date: {new Date(appointment.starttime).toLocaleDateString()}</p>
-              <p>Time: {new Date(appointment.starttime).toLocaleTimeString()} - {new Date(appointment.endtime).toLocaleTimeString()}</p>
+              <p>Time: {new Date(appointment.starttime).toISOString().substring(11, 16)} - {new Date(appointment.endtime).toISOString().substring(11, 16)}</p>
               <p>Symptoms: {appointment.symptoms}</p>
               <p>Location: {appointment.location}</p>
               <p>Send Reminders: {appointment.sendRemainders ? 'Yes' : 'No'}</p>
