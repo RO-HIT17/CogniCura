@@ -31,7 +31,7 @@ export const loginDoctor = async (req: Request, res: Response): Promise<void> =>
     }
 
     const token = generateToken(doctor._id.toString(), doctor.role);
-    res.status(200).json({ token });
+    res.status(200).json({ token , doc_id : doctor._id });
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
   }

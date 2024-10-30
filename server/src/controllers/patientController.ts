@@ -32,7 +32,7 @@ export const loginPatient = async (req: Request, res: Response): Promise<void> =
     }
 
     const token = generateToken(patient._id.toString(), patient.role);
-    res.status(200).json({ token });
+    res.status(200).json({ token,pat_id:patient._id });
   } catch (error) {
     res.status(400).json({ error: (error as Error).message });
   }

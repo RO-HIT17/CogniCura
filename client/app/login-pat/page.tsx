@@ -32,7 +32,7 @@ export const description =
       }
   
       try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const response = await fetch('http://localhost:5000/api/patient/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,9 +49,9 @@ export const description =
         const data = await response.json();
   
         localStorage.setItem('authToken', data.token);
-        localStorage.setItem('id', data.id);
+        localStorage.setItem('p_id', data.pat_id);
         
-        router.push('/home');
+        router.push('/patdashboard');
       } catch (error) {
         setError('An error occurred during login');
       }
