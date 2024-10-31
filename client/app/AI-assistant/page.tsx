@@ -23,6 +23,23 @@ export default function Component() {
     setUserInput(e.target.value);
   };
 
+  const handleVoiceInput = () => {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'ta-IN'; 
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setUserInput(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      alert('Failed to recognize speech. Please try again.');
+    };
+
+    recognition.start();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowInstructions(false);
@@ -115,7 +132,7 @@ export default function Component() {
                   </div>
                 </CardHeader>
                 <CardBody className="p-4">
-                <p>Name: {doctor.firstName} {doctor.lastName}</p>
+                  <p>Name: {doctor.firstName} {doctor.lastName}</p>
                   <p>Specialization: {doctor.specialization}</p>
                   <p>Contact: {doctor.phone}</p>
                   <p>Email: {doctor.email}</p>
@@ -130,6 +147,7 @@ export default function Component() {
           </div>
         )}
       </div>
+      
       <form onSubmit={handleSubmit} >
         <Textarea
           id="message"
@@ -139,6 +157,9 @@ export default function Component() {
           onChange={handleInputChange}
         />
         <div className="flex items-center mt-2">
+          <Button type="button" size="sm" className="mr-2" onClick={handleVoiceInput}>
+            Voice Input
+          </Button>
           <Button type="submit" size="sm" className="ml-auto">
             Check Symptoms
           </Button>
