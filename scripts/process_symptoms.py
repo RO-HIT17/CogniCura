@@ -72,7 +72,7 @@ def process_symptoms(text):
     response = (f"Based on the symptoms you provided, it seems you might have {predicted_disease}. "
                 f"I would recommend taking {medicine}. "
                 f"For further assistance, you should consult a {specialization} specialist.")
-    return {"response": response, "tam": trans_tam(response)}
+    return {"response": response, "tam_res": trans_tam(response) , "disease": predicted_disease, "tam_disease": trans_tam(predicted_disease), "medicine": medicine, "tam_medicine": trans_tam(medicine), "specialization": specialization,"tam_specialization": trans_tam(specialization)}
 
 if __name__ == "__main__":
     import sys

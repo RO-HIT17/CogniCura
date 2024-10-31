@@ -6,7 +6,6 @@ export const processSymptoms = (req: Request, res: Response): void => {
   const { text } = req.body;
   const scriptPath = path.join(__dirname, '../../../scripts/process_symptoms.py');
 
-  // Set the PYTHONIOENCODING environment variable to utf-8
   const command = `set PYTHONIOENCODING=utf-8 && python "${scriptPath}" "${text}"`;
 
   exec(command, (error, stdout, stderr) => {

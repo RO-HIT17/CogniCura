@@ -37,6 +37,19 @@ export const loginDoctor = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+export const getDoctorsBySpecialization = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { specialization } = req.body;
+    const doctors = await DoctorModel.find({ specialization });
+    if (doctors.length === 0) {
+      res.status(404).json({ message: 'No doctors found with this specialization' });
+      return;
+    }
+    res.status(200).json(doctors);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
+};
 
 export const getDoctorById = async (req: Request, res: Response): Promise<void> => {
   try {
