@@ -48,8 +48,8 @@ To install dependencies and run the development server, you can use npm:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-repo/healthcare-app.git
-   cd healthcare-app
+   git clone https://github.com/RO-HIT17/HealthCare_Sparkathon.git
+   cd HealthCare_Sparkathon
    ```
 
 2. **Install Dependencies**
@@ -163,11 +163,6 @@ The AI Assistant component offers AI-assisted diagnostics and doctor recommendat
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 ## Acknowledgements
 
