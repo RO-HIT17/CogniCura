@@ -5,8 +5,6 @@ CogniCura leverages modern web technologies to provide a seamless experience for
 
 ---
 
----
-
 > **Built by Team Code Crusaders for Sparkathon - I++'24**  
 
 ---
