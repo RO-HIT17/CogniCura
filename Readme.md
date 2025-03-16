@@ -1,7 +1,13 @@
 
-# Healthcare App
+# CogniCura
 
-Built for **Sparkathon** by team **Code Crusaders**, this Healthcare App leverages modern web technologies to provide a seamless experience for managing healthcare appointments, patient history, and AI-assisted diagnostics. The app supports both **Tamil** and **English** for the AI chat assistant, allowing users to interact in their preferred language.
+CogniCura leverages modern web technologies to provide a seamless experience for managing healthcare appointments, patient history, and AI-assisted diagnostics. The app supports both **Tamil** and **English** for the AI chat assistant, allowing users to interact in their preferred language.
+
+---
+
+---
+
+> **Built by Team Code Crusaders for Sparkathon - I++'24**  
 
 ---
 
@@ -19,7 +25,7 @@ Built for **Sparkathon** by team **Code Crusaders**, this Healthcare App leverag
 
 ## Overview
 
-The Healthcare App is designed to streamline healthcare information management. It includes features such as patient registration, appointment scheduling, managing patient history, and AI-assisted diagnostics that provide doctor recommendations. The AI chat assistant is multilingual and supports both **Tamil** and **English**, enabling a wider range of users to interact with the app.
+Cogni Cura is designed to streamline healthcare information management. It includes features such as patient registration, appointment scheduling, managing patient history, and AI-assisted diagnostics that provide doctor recommendations. The AI chat assistant is multilingual and supports both **Tamil** and **English**, enabling a wider range of users to interact with the app.
 
 ---
 
@@ -48,8 +54,8 @@ To install dependencies and run the development server, follow these steps:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/RO-HIT17/HealthCare_Sparkathon.git
-   cd HealthCare_Sparkathon
+   git clone https://github.com/RO-HIT17/CogniCura.git
+   cd CogniCura
    ```
 
 2. **Install Dependencies**
